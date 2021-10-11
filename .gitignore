@@ -1,0 +1,32 @@
+*.class
+*.jar
+*.war
+*.ear
+*~
+.#*
+.*.rej
+.*~
+.DS_Store
+pom.xml.versionsBackup
+*.swp
+language.settings.xml
+target
+
+# Eclipse
+/eclipse
+.metadata
+.recommenders
+.classpath
+.project
+.settings/
+
+# Dolphin browser
+.directory
+
+# IntelliJ IDEA
+*.iml
+.idea/*
+.autoenv.zsh
+
+# re-enable gradle wrapper
+!gradle-wrapper.jar
