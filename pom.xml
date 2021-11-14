@@ -6,7 +6,7 @@
    <version>2.0.10</version>
    <packaging>jar</packaging>
    <name>zest-swt</name>
-   <description>NetXMS Management Console</description>
+   <description>NetXMS Zest port for SWT</description>
    <url>http://www.netxms.org</url>
    <licenses>
       <license>
