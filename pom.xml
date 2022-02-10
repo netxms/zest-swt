@@ -22,7 +22,7 @@
    <properties>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <build.finalName>${project.artifactId}-${project.version}</build.finalName>
-      <lib.scope>compile</lib.scope>
+      <lib.scope>provided</lib.scope>
       <swt.version>3.118.0</swt.version>
    </properties>
    <dependencies>
@@ -42,7 +42,7 @@
          <groupId>org.netxms</groupId>
          <artifactId>draw2d-swt</artifactId>
          <version>3.10.102</version>
-         <scope>${lib.scope}</scope>
+         <scope>compile</scope>
          <exclusions>
             <exclusion>
                <groupId>org.eclipse.platform</groupId>
