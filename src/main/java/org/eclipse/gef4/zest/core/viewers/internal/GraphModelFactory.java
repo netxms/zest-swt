@@ -20,7 +20,7 @@ import org.eclipse.gef4.zest.core.widgets.GraphConnection;
 import org.eclipse.gef4.zest.core.widgets.GraphNode;
 
 /**
- * This factory helps make models (nodes & connections).
+ * This factory helps make models (nodes &amp; connections).
  * 
  * @author Ian Bull
  * @author Chris Callendar

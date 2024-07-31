@@ -223,7 +223,7 @@ public class GraphConnection extends GraphItem {
 	 * with CONNECTION in ZestStyles.
 	 * 
 	 * @return the style of this connection.
-	 * @see #ZestStyles
+	 * @see ZestStyles
 	 */
 	public int getConnectionStyle() {
 		return connectionStyle;
@@ -233,8 +233,7 @@ public class GraphConnection extends GraphItem {
 	 * Returns the style of this connection. Valid styles are those that begin
 	 * with CONNECTION in ZestStyles.
 	 * 
-	 * @return the style of this connection.
-	 * @see #ZestStyles
+	 * @see ZestStyles
 	 */
 	public void setConnectionStyle(int style) {
 		this.connectionStyle = style;
@@ -247,8 +246,7 @@ public class GraphConnection extends GraphItem {
 	 * weight of 0 results in the maximum spring length being used (farthest
 	 * apart). A weight of 1 results in the minimum spring length being used
 	 * (closest together).
-	 * 
-	 * @see org.eclipse.mylar.zest.layouts.LayoutRelationship#getWeightInLayout()
+	 *
 	 * @return the weight: {-1, [0 - 1]}.
 	 */
 	public double getWeightInLayout() {
@@ -323,7 +321,7 @@ public class GraphConnection extends GraphItem {
 	 * 
 	 * @param color
 	 *            the color to be set.
-	 * @see changeLineColor(Color color)
+	 * @see #changeLineColor(Color color)
 	 */
 	public void setLineColor(Color color) {
 		this.foreground = color;

@@ -62,14 +62,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements
 	 * @param composite
 	 * @param style
 	 *            the style for the viewer and for the layout algorithm
-	 * @see ZestStyles#LAYOUT_GRID
-	 * @see ZestStyles#LAYOUT_TREE
-	 * @see ZestStyles#LAYOUT_RADIAL
-	 * @see ZestStyles#LAYOUT_SPRING
-	 * @see ZestStyles#NO_OVERLAPPING_NODES
-	 * @see ZestStyles#NODES_HIGHLIGHT_ADJACENT
 	 * @see ZestStyles#GESTURES_DISABLED
-	 * @see ZestStyles#ANIMATION_DISABLED
 	 * @see SWT#V_SCROLL
 	 * @see SWT#H_SCROLL
 	 */
@@ -218,8 +211,8 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements
 	 * stable. If use this method (to access internal nodes and edges), your
 	 * code may not compile between versions.
 	 * 
-	 * @param The
-	 *            user model node.
+	 * @param element
+	 *            The user model node.
 	 * @return An IGraphItem. This should be either a IGraphModelNode or
 	 *         IGraphModelConnection
 	 */

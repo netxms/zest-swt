@@ -71,7 +71,7 @@ public interface EntityLayout {
 	 * least one node that is a successor of at least one node from subgraph S</li>
 	 * </ul>
 	 * For subgraphs that are not <code>GraphEntities</code> an empty array will
-	 * be returned.</br>Entities connected with this node by a bidirectional
+	 * be returned.<br>Entities connected with this node by a bidirectional
 	 * connection are considered both successors and predecessors. Any
 	 * subsequent changes to the returned array do not affect this node.
 	 * 
@@ -97,7 +97,7 @@ public interface EntityLayout {
 	 * </li>
 	 * </ul>
 	 * For subgraphs that are not <code>GraphEntities</code> an empty array will
-	 * be returned.</br>Entities connected with this node by a bidirectional
+	 * be returned.<br>Entities connected with this node by a bidirectional
 	 * connection are considered both successors and predecessors. Any
 	 * subsequent changes to the returned array do not affect this node.
 	 * 

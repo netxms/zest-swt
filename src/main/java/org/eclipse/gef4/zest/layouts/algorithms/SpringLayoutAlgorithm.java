@@ -31,10 +31,9 @@ import org.eclipse.gef4.zest.layouts.interfaces.SubgraphLayout;
  * <p>
  * Instructions for using SpringLayoutAlgorithm: <br>
  * 1. Instantiate a SpringLayout object; <br>
- * 2. Populate the data repository using {@link #add add(...)}; <br>
- * 3. Populate the relation repository using {@link #addRelation
- * addRelation(...)}; <br>
- * 4. Execute {@link #compute compute()}; <br>
+ * 2. Populate the data repository using add(...); <br>
+ * 3. Populate the relation repository using addRelation(...); <br>
+ * 4. Execute compute(); <br>
  * 5. Execute {@link #fitWithinBounds fitWithinBounds(...)}; <br>
  * 6. Query the computed results(node size and node position).
  * 
@@ -374,7 +373,7 @@ public class SpringLayoutAlgorithm implements LayoutAlgorithm {
 	/**
 	 * Sets the number of iterations to be used.
 	 * 
-	 * @param gravitation
+	 * @param iterations
 	 *            The number of iterations.
 	 */
 	public void setIterations(int iterations) {

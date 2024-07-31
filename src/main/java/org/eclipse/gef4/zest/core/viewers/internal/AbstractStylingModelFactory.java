@@ -83,7 +83,7 @@ public abstract class AbstractStylingModelFactory implements
 	 * Takes a list of IGraphModelConnections and adjusts the curve depths and
 	 * the bezier curves based on the number of curves in the list.
 	 * 
-	 * @param rightList
+	 * @param connections
 	 * @param size
 	 *            total number of arcs - may be bigger then connections.size
 	 */
@@ -344,7 +344,7 @@ public abstract class AbstractStylingModelFactory implements
 	 * Builds the graph model from the viewer's content provider. There is no
 	 * guarantee that the model will be cleared before this method is called.
 	 * 
-	 * @param graph
+	 * @param model
 	 */
 	protected void doBuildGraph(Graph model) {
 		clearGraph(model);

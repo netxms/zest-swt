@@ -128,7 +128,6 @@ public class Graph extends FigureCanvas implements IContainer {
 	 * @param parent
 	 * @param style
 	 * @see ZestStyles#GESTURES_DISABLED
-	 * @see ZestStyles#ANIMATION_DISABLED
 	 */
 	public Graph(Composite parent, int style) {
 		super(parent, (style | SWT.DOUBLE_BUFFERED) & ~ZestStyles.GRAPH_STYLES);
@@ -280,9 +279,9 @@ public class Graph extends FigureCanvas implements IContainer {
 	/**
 	 * Sets the default connection style.
 	 * 
-	 * @param connection
+	 * @param connectionStyle
 	 *            style the connection style to set
-	 * @see org.eclipse.mylar.zest.core.widgets.ZestStyles
+	 * @see ZestStyles
 	 */
 	public void setConnectionStyle(int connectionStyle) {
 		this.connectionStyle = connectionStyle;
@@ -292,7 +291,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	 * Gets the default connection style.
 	 * 
 	 * @return the connection style
-	 * @see org.eclipse.mylar.zest.core.widgets.ZestStyles
+	 * @see ZestStyles
 	 */
 	public int getConnectionStyle() {
 		return connectionStyle;
@@ -303,7 +302,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	 * 
 	 * @param nodeStyle
 	 *            the node style to set
-	 * @see org.eclipse.mylar.zest.core.widgets.ZestStyles
+	 * @see ZestStyles
 	 */
 	public void setNodeStyle(int nodeStyle) {
 		this.nodeStyle = nodeStyle;
@@ -313,7 +312,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	 * Gets the default node style.
 	 * 
 	 * @return the node style
-	 * @see org.eclipse.mylar.zest.core.widgets.ZestStyles
+	 * @see ZestStyles
 	 */
 	public int getNodeStyle() {
 		return nodeStyle;
@@ -331,7 +330,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	/**
 	 * Changes the selection to the list of items
 	 * 
-	 * @param l
+	 * @param items
 	 */
 	public void setSelection(GraphItem[] items) {
 		clearSelection();

@@ -42,7 +42,6 @@ public interface IEntityStyleProvider {
 	 * @param entity
 	 *            the entity to be styled.
 	 * @return the forground colour of this entity.
-	 * @see #dispose()
 	 */
 	public Color getNodeHighlightColor(Object entity);
 
@@ -54,7 +53,6 @@ public interface IEntityStyleProvider {
 	 * @param entity
 	 *            the entity to be styled.
 	 * @return the background colour for this entity.
-	 * @see #dispose()
 	 */
 	public Color getBorderColor(Object entity);
 
@@ -66,7 +64,6 @@ public interface IEntityStyleProvider {
 	 * @param entity
 	 *            the entity to be styled.
 	 * @return the border highlight colour for this entity.
-	 * @see #dispose()
 	 */
 	public Color getBorderHighlightColor(Object entity);
 
@@ -110,7 +107,6 @@ public interface IEntityStyleProvider {
 	 * @param entity
 	 *            The entity to be styled
 	 * @return The colour for the node
-	 * @see #dispose()
 	 */
 	public Color getBackgroundColour(Object entity);
 

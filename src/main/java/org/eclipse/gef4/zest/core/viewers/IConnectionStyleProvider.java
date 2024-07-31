@@ -20,8 +20,8 @@ import org.eclipse.swt.graphics.Color;
  * relationships, rather than on connected nodes.
  * 
  * @author Del Myers
- * @see #IGraphContentProvider
- * @see #IEntityStyleProvider
+ * @see IGraphContentProvider
+ * @see IEntityStyleProvider
  * 
  */
 // @tag bug(151327-Styles) : created to solve this bug
@@ -45,7 +45,6 @@ public interface IConnectionStyleProvider {
 	 * @param rel
 	 *            the relationship represented by this connection.
 	 * @return the color.
-	 * @see #dispose()
 	 */
 	public Color getColor(Object rel);
 
@@ -56,7 +55,6 @@ public interface IConnectionStyleProvider {
 	 * @param rel
 	 *            the relationship represented by this connection.
 	 * @return the highlighted color. Null for default.
-	 * @see #dispose()
 	 */
 	public Color getHighlightColor(Object rel);
 

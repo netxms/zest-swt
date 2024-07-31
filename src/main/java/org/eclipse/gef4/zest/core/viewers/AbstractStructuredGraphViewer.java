@@ -120,7 +120,7 @@ public abstract class AbstractStructuredGraphViewer extends
 	 * 
 	 * @param nodeStyle
 	 *            the style for the nodes.
-	 * @see #ZestStyles
+	 * @see ZestStyles
 	 */
 	public void setNodeStyle(int nodeStyle) {
 		if (getInput() != null) {
@@ -135,7 +135,7 @@ public abstract class AbstractStructuredGraphViewer extends
 	 * 
 	 * @param connectionStyle
 	 *            the style for the connections.
-	 * @see #ZestStyles
+	 * @see ZestStyles
 	 */
 	public void setConnectionStyle(int connectionStyle) {
 		if (getInput() != null) {
@@ -725,7 +725,7 @@ public abstract class AbstractStructuredGraphViewer extends
 	 * Creates a new node and adds it to the graph. If it already exists nothing
 	 * happens.
 	 * 
-	 * @param newNode
+	 * @param element
 	 */
 	public void addNode(Object element) {
 		if (nodesMap.get(element) == null) {

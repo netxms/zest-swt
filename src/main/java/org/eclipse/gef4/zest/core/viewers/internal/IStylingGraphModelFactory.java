@@ -29,7 +29,7 @@ import org.eclipse.jface.viewers.StructuredViewer;
  * particular implementation of IStylingGraphModelFactory. Unless otherwise
  * documented, clients should expect that the implementation of
  * IStylingGraphModelFactory adheres to the general defaults found in
- * {@link IZestGraphDefaults}.
+ * IZestGraphDefaults.
  * 
  * @author Del Myers
  */

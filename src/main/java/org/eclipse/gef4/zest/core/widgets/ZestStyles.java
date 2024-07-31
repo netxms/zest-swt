@@ -110,7 +110,7 @@ public final class ZestStyles {
 	 * Validates the given style for connections to see if it is legal. Returns
 	 * false if not.
 	 * 
-	 * @param style
+	 * @param styleToValidate
 	 *            the style to check.
 	 * @return true iff the given style is legal.
 	 */

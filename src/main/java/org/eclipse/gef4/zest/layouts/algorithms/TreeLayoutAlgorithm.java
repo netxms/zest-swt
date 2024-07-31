@@ -108,8 +108,8 @@ public class TreeLayoutAlgorithm implements LayoutAlgorithm {
 	}
 
 	/**
-	 * @param nodeSpaceSize
-	 *            the nodeSpaceSize to set
+	 * @param nodeSpace
+	 *            the nodeSpace to set
 	 */
 	public void setNodeSpace(Dimension nodeSpace) {
 		this.nodeSpace = nodeSpace;

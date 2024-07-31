@@ -32,7 +32,6 @@ import org.eclipse.gef4.zest.layouts.interfaces.NodeLayout;
  * expanded, all its successors are unpruned and connections pointing to them
  * are shown.
  * </p>
- * </p>
  * <p>
  * <b>NOTE:</b> A <code>Graph</code> using this manager should use
  * {@link DefaultSubgraph}, which doesn't show any information about subgraphs
@@ -210,7 +209,7 @@ public class DAGExpandCollapseManager implements ExpandCollapseManager {
 	 * rest are collapsed and pruned if they don't have any expanded
 	 * predecessors
 	 * 
-	 * @param target
+	 * @param node
 	 */
 	private void resetState(NodeLayout node) {
 		NodeLayout[] predecessors = node.getPredecessingNodes();

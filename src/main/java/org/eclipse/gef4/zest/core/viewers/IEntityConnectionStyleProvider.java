@@ -47,7 +47,6 @@ public interface IEntityConnectionStyleProvider {
 	 * @param dest
 	 *            the destination entity.
 	 * @return the color.
-	 * @see #dispose()
 	 */
 	public Color getColor(Object src, Object dest);
 
@@ -60,7 +59,6 @@ public interface IEntityConnectionStyleProvider {
 	 * @param dest
 	 *            the destination entity.
 	 * @return the highlighted color. Null for default.
-	 * @see #dispose()
 	 */
 	public Color getHighlightColor(Object src, Object dest);
 

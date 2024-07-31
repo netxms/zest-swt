@@ -10,11 +10,12 @@
 package org.eclipse.gef4.zest.core.viewers;
 
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.jface.viewers.IBaseLabelProvider;
 
 /**
  * Allows a user to create a figure for an element in graph model. To use this
  * interface, it should be implemented and passed to
- * {@link GraphViewer#setLabelProvider()}
+ * {@link GraphViewer#setLabelProvider(IBaseLabelProvider)}
  */
 public interface IFigureProvider {
 
