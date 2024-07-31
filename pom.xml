@@ -7,7 +7,7 @@
    <packaging>jar</packaging>
    <name>zest-swt</name>
    <description>NetXMS Zest port for SWT</description>
-   <url>http://www.netxms.org</url>
+   <url>https://github.com/netxms/zest-swt</url>
    <licenses>
       <license>
          <name>GNU General Public License (GPL) v2</name>
@@ -19,6 +19,30 @@
       <developerConnection>scm:git:ssh://github.com/netxms/zest-swt</developerConnection>
       <url>https://github.com/netxms/zest-swt</url>
    </scm>
+   <developers>
+      <developer>
+         <id>alex.kirhenshtein</id>
+         <name>Alex Kirhenshtein</name>
+         <email>alk@netxms.org</email>
+         <organization>Raden Solutions</organization>
+         <organizationUrl>https://radensolutions.com</organizationUrl>
+         <roles>
+            <role>developer</role>
+         </roles>
+         <timezone>Europe/Riga</timezone>
+      </developer>
+   </developers>
+   <issueManagement>
+      <system>GitHub Issues</system>
+      <url>https://github.com/netxms/zest-swt/issues</url>
+   </issueManagement>
+   <distributionManagement>
+      <repository>
+          <id>ossrh</id>
+          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+      </repository>
+   </distributionManagement>
+
    <properties>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <build.finalName>${project.artifactId}-${project.version}</build.finalName>
@@ -180,9 +204,25 @@
             <artifactId>maven-compiler-plugin</artifactId>
             <version>3.8.1</version>
             <configuration>
-               <source>1.8</source>
-               <target>1.8</target>
+               <release>11</release>
             </configuration>
+         </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>3.2.4</version>
+            <executions>
+               <execution>
+                  <id>sign-artifacts</id>
+                  <phase>verify</phase>
+                  <goals>
+                     <goal>sign</goal>
+                  </goals>
+               </execution>
+            </executions>
+             <configuration>
+                 <repositoryId>ossrh</repositoryId>
+             </configuration>
          </plugin>
       </plugins>
    </build>
