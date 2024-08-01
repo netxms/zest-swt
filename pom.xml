@@ -3,22 +3,25 @@
    <modelVersion>4.0.0</modelVersion>
    <groupId>org.netxms</groupId>
    <artifactId>zest-swt</artifactId>
-   <version>2.0.11</version>
+   <version>2.0.12</version>
    <packaging>jar</packaging>
    <name>zest-swt</name>
    <description>NetXMS Zest port for SWT</description>
    <url>https://github.com/netxms/zest-swt</url>
+
    <licenses>
       <license>
          <name>GNU General Public License (GPL) v2</name>
          <url>http://www.gnu.org/licenses/gpl2.txt</url>
       </license>
    </licenses>
+
    <scm>
       <connection>scm:git:https://github.com/netxms/zest-swt</connection>
       <developerConnection>scm:git:ssh://github.com/netxms/zest-swt</developerConnection>
       <url>https://github.com/netxms/zest-swt</url>
    </scm>
+
    <developers>
       <developer>
          <id>alex.kirhenshtein</id>
@@ -32,10 +35,12 @@
          <timezone>Europe/Riga</timezone>
       </developer>
    </developers>
+
    <issueManagement>
       <system>GitHub Issues</system>
       <url>https://github.com/netxms/zest-swt/issues</url>
    </issueManagement>
+
    <distributionManagement>
       <repository>
           <id>ossrh</id>
@@ -47,13 +52,14 @@
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <build.finalName>${project.artifactId}-${project.version}</build.finalName>
       <lib.scope>provided</lib.scope>
-      <swt.version>3.118.0</swt.version>
+      <swt.version>3.126.0</swt.version>
    </properties>
+
    <dependencies>
       <dependency>
          <groupId>org.eclipse.platform</groupId>
          <artifactId>org.eclipse.jface</artifactId>
-         <version>3.24.0</version>
+         <version>3.34.0</version>
          <scope>${lib.scope}</scope>
          <exclusions>
             <exclusion>
@@ -65,7 +71,7 @@
       <dependency>
          <groupId>org.netxms</groupId>
          <artifactId>draw2d-swt</artifactId>
-         <version>3.10.102</version>
+         <version>3.10.103</version>
          <scope>compile</scope>
          <exclusions>
             <exclusion>
@@ -75,6 +81,86 @@
          </exclusions>
       </dependency>
    </dependencies>
+
+   <build>
+      <finalName>${build.finalName}</finalName>
+      <plugins>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <version>3.3.0</version>
+         </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.13.0</version>
+            <configuration>
+               <release>17</release>
+            </configuration>
+         </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <version>3.3.1</version>
+            <executions>
+               <execution>
+                  <id>attach-sources</id>
+                  <goals>
+                     <goal>jar-no-fork</goal>
+                  </goals>
+               </execution>
+            </executions>
+         </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>3.8.0</version>
+            <executions>
+               <execution>
+                  <id>attach-javadoc</id>
+                  <goals>
+                     <goal>jar</goal>
+                  </goals>
+               </execution>
+            </executions>
+            <configuration>
+               <tags>
+                  <tag>
+                     <name>noreference</name>
+                     <placement>a</placement>
+                     <head>This method is not intended to be referenced by clients.</head>
+                  </tag>
+                  <tag>
+                     <name>noextend</name>
+                     <placement>a</placement>
+                     <head>This interface is not intended to be extended by clients.</head>
+                  </tag>
+                  <tag>
+                     <name>nooverride</name>
+                     <placement>a</placement>
+                     <head>This method is not intended to be re-implemented or extended.</head>
+                  </tag>
+                  <tag>
+                     <name>noimplement</name>
+                     <placement>a</placement>
+                     <head>This interface is not intended to be implemented by clients.</head>
+                  </tag>
+                  <tag>
+                     <name>tag</name>
+                     <placement>a</placement>
+                     <head>Tags:</head>
+                  </tag>
+                  <tag>
+                     <name>input</name>
+                     <placement>a</placement>
+                     <head>Input:</head>
+                  </tag>
+               </tags>
+            </configuration>
+         </plugin>
+      </plugins>
+   </build>
+
    <profiles>
       <profile>
          <id>windows</id>
@@ -190,100 +276,30 @@
             </dependency>
          </dependencies>
       </profile>
+      <profile>
+         <id>publish</id>
+         <build>
+            <plugins>
+               <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-gpg-plugin</artifactId>
+                  <version>3.2.4</version>
+                  <executions>
+                     <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                           <goal>sign</goal>
+                        </goals>
+                     </execution>
+                  </executions>
+                  <configuration>
+                     <repositoryId>ossrh</repositoryId>
+                  </configuration>
+               </plugin>
+            </plugins>
+         </build>
+      </profile>
    </profiles>
-   <build>
-      <finalName>${build.finalName}</finalName>
-      <plugins>
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-jar-plugin</artifactId>
-            <version>3.2.0</version>
-         </plugin>
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.8.1</version>
-            <configuration>
-               <release>11</release>
-            </configuration>
-         </plugin>
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-source-plugin</artifactId>
-            <version>3.3.1</version>
-            <executions>
-               <execution>
-                  <id>attach-sources</id>
-                  <goals>
-                     <goal>jar-no-fork</goal>
-                  </goals>
-               </execution>
-            </executions>
-         </plugin>
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.8.0</version>
-            <executions>
-               <execution>
-                  <id>attach-javadoc</id>
-                  <goals>
-                     <goal>jar</goal>
-                  </goals>
-               </execution>
-            </executions>
-            <configuration>
-               <tags>
-                  <tag>
-                     <name>noreference</name>
-                     <placement>a</placement>
-                     <head>This method is not intended to be referenced by clients.</head>
-                  </tag>
-                  <tag>
-                     <name>noextend</name>
-                     <placement>a</placement>
-                     <head>This interface is not intended to be extended by clients.</head>
-                  </tag>
-                  <tag>
-                     <name>nooverride</name>
-                     <placement>a</placement>
-                     <head>This method is not intended to be re-implemented or extended.</head>
-                  </tag>
-                  <tag>
-                     <name>noimplement</name>
-                     <placement>a</placement>
-                     <head>This interface is not intended to be implemented by clients.</head>
-                  </tag>
-                  <tag>
-                     <name>tag</name>
-                     <placement>a</placement>
-                     <head>Tags:</head>
-                  </tag>
-                  <tag>
-                     <name>input</name>
-                     <placement>a</placement>
-                     <head>Input:</head>
-                  </tag>
-               </tags>
-            </configuration>
-         </plugin>
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-gpg-plugin</artifactId>
-            <version>3.2.4</version>
-            <executions>
-               <execution>
-                  <id>sign-artifacts</id>
-                  <phase>verify</phase>
-                  <goals>
-                     <goal>sign</goal>
-                  </goals>
-               </execution>
-            </executions>
-             <configuration>
-                 <repositoryId>ossrh</repositoryId>
-             </configuration>
-         </plugin>
-      </plugins>
-   </build>
+
 </project>
