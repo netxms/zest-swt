@@ -3,7 +3,7 @@
    <modelVersion>4.0.0</modelVersion>
    <groupId>org.netxms</groupId>
    <artifactId>zest-swt</artifactId>
-   <version>2.0.12</version>
+   <version>2.0.13</version>
    <packaging>jar</packaging>
    <name>zest-swt</name>
    <description>NetXMS Zest port for SWT</description>
@@ -52,14 +52,14 @@
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <build.finalName>${project.artifactId}-${project.version}</build.finalName>
       <lib.scope>provided</lib.scope>
-      <swt.version>3.126.0</swt.version>
+      <swt.version>3.128.0</swt.version>
    </properties>
 
    <dependencies>
       <dependency>
          <groupId>org.eclipse.platform</groupId>
          <artifactId>org.eclipse.jface</artifactId>
-         <version>3.34.0</version>
+         <version>3.35.100</version>
          <scope>${lib.scope}</scope>
          <exclusions>
             <exclusion>

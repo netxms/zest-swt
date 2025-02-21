@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import org.eclipse.draw2d.Connection;
+import org.eclipse.draw2d.ConnectionRouter;
 import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.IFigure;
 
@@ -96,12 +98,21 @@ public class ZestRootLayer extends FreeformLayer {
 
 	private void changeFigureLayer(IFigure figure, int newLayer) {
 		ArrayList decorations = getDecorations(figure);
+		Object constraint = null;
+		if (figure instanceof Connection)
+		{
+			ConnectionRouter router = ((Connection)figure).getConnectionRouter();
+			if (router != null)
+				constraint = router.getConstraint((Connection)figure);
+		}
 		remove(figure);
 
 		addFigure(figure, newLayer);
 		for (Iterator iterator = decorations.iterator(); iterator.hasNext();) {
 			addDecoration(figure, (IFigure) iterator.next());
 		}
+		if (constraint != null)
+			((Connection)figure).getConnectionRouter().setConstraint((Connection)figure, constraint);
 
 		this.invalidate();
 		this.repaint();
