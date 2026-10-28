@@ -41,13 +41,6 @@
       <url>https://github.com/netxms/zest-swt/issues</url>
    </issueManagement>
 
-   <distributionManagement>
-      <repository>
-          <id>ossrh</id>
-          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-      </repository>
-   </distributionManagement>
-
    <properties>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <build.finalName>${project.artifactId}-${project.version}</build.finalName>
@@ -277,13 +270,19 @@
          </dependencies>
       </profile>
       <profile>
-         <id>publish</id>
+         <id>central</id>
+         <distributionManagement>
+            <repository>
+               <id>central</id>
+               <url>https://central.sonatype.com/api/v1/publisher</url>
+            </repository>
+         </distributionManagement>
          <build>
             <plugins>
                <plugin>
                   <groupId>org.apache.maven.plugins</groupId>
                   <artifactId>maven-gpg-plugin</artifactId>
-                  <version>3.2.4</version>
+                  <version>3.2.8</version>
                   <executions>
                      <execution>
                         <id>sign-artifacts</id>
@@ -293,8 +292,16 @@
                         </goals>
                      </execution>
                   </executions>
+               </plugin>
+               <plugin>
+                  <groupId>org.sonatype.central</groupId>
+                  <artifactId>central-publishing-maven-plugin</artifactId>
+                  <version>0.10.0</version>
+                  <extensions>true</extensions>
                   <configuration>
-                     <repositoryId>ossrh</repositoryId>
+                     <publishingServerId>central</publishingServerId>
+                     <autoPublish>false</autoPublish>
+                     <waitUntil>published</waitUntil>
                   </configuration>
                </plugin>
             </plugins>
