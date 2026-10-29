@@ -114,8 +114,10 @@ public class RadialLayoutAlgorithm implements LayoutAlgorithm {
 					for (int j = 1; j < count; j++)
 						minGap = Math.min(minGap, ring.get(j).angle
 								- ring.get(j - 1).angle);
-					minRadius = NODE_SPACING
-							/ (2 * Math.sin(Math.min(minGap, Math.PI) / 2));
+					// Zero gap is only possible with empty angular range
+					if (minGap > 0)
+						minRadius = NODE_SPACING
+								/ (2 * Math.sin(Math.min(minGap, Math.PI) / 2));
 				}
 				radius = Math.max(radius + RING_SPACING, minRadius);
 			}

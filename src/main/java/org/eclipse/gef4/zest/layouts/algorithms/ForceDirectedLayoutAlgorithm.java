@@ -33,8 +33,12 @@ import org.eclipse.gef4.zest.layouts.interfaces.LayoutContext;
  */
 public class ForceDirectedLayoutAlgorithm implements LayoutAlgorithm {
 
-	private static final int ITERATIONS = 200;
-	private static final long TIMEOUT = 5000; // milliseconds
+	private static final int MAX_ITERATIONS = 200;
+	private static final int MIN_ITERATIONS = 30;
+	// Iteration cost grows with square of connection count (crossing checks);
+	// number of iterations is limited by graph size, not by time, so result
+	// does not depend on machine speed
+	private static final double WORK_LIMIT = 1.3e8;
 	private static final int NODE_SPACING = 10;
 	private static final int INSETS = 4;
 	private static final double GRAVITY = 0.5;
@@ -124,13 +128,12 @@ public class ForceDirectedLayoutAlgorithm implements LayoutAlgorithm {
 		int gridRows = (int) ((maxY - minY) / range) + 1;
 		int[] cellHead = new int[gridColumns * gridRows];
 		int[] nextInCell = new int[count];
-		long startTime = System.currentTimeMillis();
-		for (int iteration = 0; iteration < ITERATIONS; iteration++) {
-			double progress = Math.max((double) iteration / ITERATIONS,
-					(double) (System.currentTimeMillis() - startTime) / TIMEOUT);
-			if (progress >= 1)
-				break;
-			double temperature = initialTemperature * (1 - progress);
+		int iterations = (int) Math.max(MIN_ITERATIONS, Math.min(
+				MAX_ITERATIONS, WORK_LIMIT
+						/ ((double) links.length * links.length + count)));
+		for (int iteration = 0; iteration < iterations; iteration++) {
+			double temperature = initialTemperature
+					* (1 - (double) iteration / iterations);
 
 			// Grid of cells with side equal to repulsion range; nodes repel
 			// only nodes in the same or adjacent cells
