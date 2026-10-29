@@ -715,8 +715,7 @@ public class GraphConnection extends GraphItem {
 		}
 
 		public boolean isDirected() {
-			return !ZestStyles.checkStyle(getConnectionStyle(),
-					ZestStyles.CONNECTIONS_DIRECTED);
+			return GraphConnection.this.isDirected();
 		}
 
 		public boolean isVisible() {

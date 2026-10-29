@@ -18,12 +18,15 @@ import org.eclipse.gef4.zest.layouts.dataStructures.DisplayIndependentRectangle;
 import org.eclipse.gef4.zest.layouts.interfaces.ConnectionLayout;
 import org.eclipse.gef4.zest.layouts.interfaces.EntityLayout;
 import org.eclipse.gef4.zest.layouts.interfaces.LayoutContext;
+import org.eclipse.gef4.zest.layouts.interfaces.NodeLayout;
 
 /**
  * Force-directed (Fruchterman-Reingold) layout that does not add connection
  * crossings. Simulation starts from {@link RadialLayoutAlgorithm radial
  * layout}, where tree connections do not cross, instead of random placement,
- * so result is the same each time. Nodes are moved one at a time, and a move
+ * so result is the same each time. With undirected connections, simulation is
+ * repeated from radial layouts centered on several most central nodes, as many
+ * as graph size allows, and the result with the fewest crossings is used. Nodes are moved one at a time, and a move
  * is rejected if connections of the moved node would cross more other
  * connections than before the move. Distances are measured in units of node
  * size, so wide nodes are kept further apart horizontally than vertically.
@@ -35,10 +38,8 @@ public class ForceDirectedLayoutAlgorithm implements LayoutAlgorithm {
 
 	private static final int MAX_ITERATIONS = 200;
 	private static final int MIN_ITERATIONS = 30;
-	// Iteration cost grows with square of connection count (crossing checks);
-	// number of iterations is limited by graph size, not by time, so result
-	// does not depend on machine speed
 	private static final double WORK_LIMIT = 1.3e8;
+	private static final int MAX_STARTS = 8;
 	private static final int NODE_SPACING = 10;
 	private static final int INSETS = 4;
 	private static final double GRAVITY = 0.5;
@@ -61,6 +62,7 @@ public class ForceDirectedLayoutAlgorithm implements LayoutAlgorithm {
 		if (!clean)
 			return;
 
+		initialLayout.setRoot(null);
 		initialLayout.applyLayout(true);
 
 		EntityLayout[] entities = context.getEntities();
@@ -88,18 +90,14 @@ public class ForceDirectedLayoutAlgorithm implements LayoutAlgorithm {
 		unitWidth += NODE_SPACING;
 		unitHeight += NODE_SPACING;
 
-		x = new double[count];
-		y = new double[count];
 		Map<Object, Integer> index = new IdentityHashMap<Object, Integer>();
-		for (int i = 0; i < count; i++) {
-			DisplayIndependentPoint location = entities[i].getLocation();
-			x[i] = location.x / unitWidth;
-			y[i] = location.y / unitHeight;
+		for (int i = 0; i < count; i++)
 			index.put(entities[i], i);
-		}
-
+		boolean directed = false;
 		List<int[]> linkList = new ArrayList<int[]>();
 		for (ConnectionLayout c : context.getConnections()) {
+			if (c.isDirected())
+				directed = true;
 			Integer source = index.get(c.getSource());
 			Integer target = index.get(c.getTarget());
 			if ((source != null) && (target != null) && !source.equals(target))
@@ -119,6 +117,90 @@ public class ForceDirectedLayoutAlgorithm implements LayoutAlgorithm {
 			nodeLinks[links[l][1]][--linkCount[links[l][1]]] = l;
 		}
 
+		// Iteration cost grows with square of connection count (crossing
+		// checks); number of iterations and starts is limited by graph size,
+		// not by time, so result does not depend on machine speed
+		double iterationWork = (double) links.length * links.length + count;
+		int iterations = (int) Math.max(MIN_ITERATIONS,
+				Math.min(MAX_ITERATIONS, WORK_LIMIT / iterationWork));
+		List<NodeLayout> startRoots = new ArrayList<NodeLayout>();
+		if (!directed) {
+			int starts = (int) Math.max(1, Math.min(MAX_STARTS, WORK_LIMIT
+					/ (iterationWork * iterations)));
+			startRoots.addAll(centralNodes(starts));
+		}
+		if (startRoots.isEmpty())
+			startRoots.add(null);
+
+		x = new double[count];
+		y = new double[count];
+		double[] bestX = null, bestY = null;
+		int bestCrossings = Integer.MAX_VALUE;
+		for (NodeLayout root : startRoots) {
+			if (root != null) {
+				initialLayout.setRoot(root);
+				initialLayout.applyLayout(true);
+			}
+			for (int i = 0; i < count; i++) {
+				DisplayIndependentPoint location = entities[i].getLocation();
+				x[i] = location.x / unitWidth;
+				y[i] = location.y / unitHeight;
+			}
+			simulate(entities, iterations, minX, maxX, minY, maxY);
+			int crossings = countAllCrossings();
+			if (crossings < bestCrossings) {
+				bestCrossings = crossings;
+				bestX = x.clone();
+				bestY = y.clone();
+				if (crossings == 0)
+					break;
+			}
+		}
+		initialLayout.setRoot(null);
+
+		for (int i = 0; i < count; i++) {
+			if (entities[i].isMovable())
+				entities[i].setLocation(bestX[i] * unitWidth, bestY[i]
+						* unitHeight);
+		}
+
+		bounds.x += INSETS;
+		bounds.y += INSETS;
+		bounds.width -= 2 * INSETS;
+		bounds.height -= 2 * INSETS;
+		AlgorithmHelper.fitWithinBounds(entities, bounds, false);
+	}
+
+	/**
+	 * Get most central nodes of the largest connected part of the graph.
+	 */
+	private List<NodeLayout> centralNodes(int maxCount) {
+		RadialLayoutAlgorithm.UndirectedGraph graph = new RadialLayoutAlgorithm.UndirectedGraph(
+				context);
+		boolean[] visited = new boolean[graph.size()];
+		List<Integer> largest = new ArrayList<Integer>();
+		for (int i = 0; i < graph.size(); i++) {
+			if (visited[i])
+				continue;
+			List<Integer> component = graph.component(i, visited);
+			if (component.size() > largest.size())
+				largest = component;
+		}
+		List<NodeLayout> result = new ArrayList<NodeLayout>();
+		for (int i : graph.centers(largest, new int[graph.size()])) {
+			if (result.size() == maxCount)
+				break;
+			result.add(graph.nodes[i]);
+		}
+		return result;
+	}
+
+	/**
+	 * Run force simulation on current positions.
+	 */
+	private void simulate(EntityLayout[] entities, int iterations,
+			double minX, double maxX, double minY, double maxY) {
+		int count = entities.length;
 		double k = Math.sqrt((maxX - minX) * (maxY - minY) / count);
 		double centerX = (minX + maxX) / 2;
 		double centerY = (minY + maxY) / 2;
@@ -128,9 +210,6 @@ public class ForceDirectedLayoutAlgorithm implements LayoutAlgorithm {
 		int gridRows = (int) ((maxY - minY) / range) + 1;
 		int[] cellHead = new int[gridColumns * gridRows];
 		int[] nextInCell = new int[count];
-		int iterations = (int) Math.max(MIN_ITERATIONS, Math.min(
-				MAX_ITERATIONS, WORK_LIMIT
-						/ ((double) links.length * links.length + count)));
 		for (int iteration = 0; iteration < iterations; iteration++) {
 			double temperature = initialTemperature
 					* (1 - (double) iteration / iterations);
@@ -202,17 +281,6 @@ public class ForceDirectedLayoutAlgorithm implements LayoutAlgorithm {
 				}
 			}
 		}
-
-		for (int i = 0; i < count; i++) {
-			if (entities[i].isMovable())
-				entities[i].setLocation(x[i] * unitWidth, y[i] * unitHeight);
-		}
-
-		bounds.x += INSETS;
-		bounds.y += INSETS;
-		bounds.width -= 2 * INSETS;
-		bounds.height -= 2 * INSETS;
-		AlgorithmHelper.fitWithinBounds(entities, bounds, false);
 	}
 
 	private static int cellColumn(double px, double minX, double cellSize,
@@ -222,6 +290,16 @@ public class ForceDirectedLayoutAlgorithm implements LayoutAlgorithm {
 
 	private static int cellRow(double py, double minY, double cellSize, int rows) {
 		return Math.min(rows - 1, Math.max(0, (int) ((py - minY) / cellSize)));
+	}
+
+	/**
+	 * Count all pairs of crossing connections.
+	 */
+	private int countAllCrossings() {
+		int crossings = 0;
+		for (int i = 0; i < x.length; i++)
+			crossings += countCrossings(i, x[i], y[i]);
+		return crossings / 4; // each pair is counted from each of its four nodes
 	}
 
 	/**
