@@ -45,10 +45,11 @@ public class AlgorithmHelper {
 			DisplayIndependentDimension size = entity.getSize();
 			if (entity.isMovable()) {
 				DisplayIndependentPoint location = entity.getLocation();
-				double percentX = (location.x - startingBounds.x)
-						/ (startingBounds.width);
-				double percentY = (location.y - startingBounds.y)
-						/ (startingBounds.height);
+				// Entities that all share same coordinate are centered
+				double percentX = (startingBounds.width > 0) ? (location.x - startingBounds.x)
+						/ (startingBounds.width) : 0.5;
+				double percentY = (startingBounds.height > 0) ? (location.y - startingBounds.y)
+						/ (startingBounds.height) : 0.5;
 
 				if (resize && entity.isResizable()) {
 					size.width *= sizeScale;

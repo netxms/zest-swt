@@ -147,20 +147,22 @@ public class TreeLayoutAlgorithm implements LayoutAlgorithm {
 	}
 
 	public void setLayoutContext(LayoutContext context) {
-		if (treeObserver != null) {
-			treeObserver.stop();
-		}
 		this.context = context;
-		if (context != null) {
-			treeObserver = new TreeLayoutObserver(context, null);
-		}
 	}
 
 	public void applyLayout(boolean clean) {
 		if (!clean)
 			return;
 
-		internalApplyLayout();
+		// Tree is built from current graph for each layout run; observer is
+		// not kept attached to the context because it recomputes the whole
+		// tree on every node or connection added to the graph
+		treeObserver = new TreeLayoutObserver(context, null);
+		try {
+			internalApplyLayout();
+		} finally {
+			treeObserver.stop();
+		}
 
 		EntityLayout[] entities = context.getEntities();
 
