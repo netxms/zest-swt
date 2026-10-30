@@ -32,6 +32,10 @@ import org.eclipse.gef4.zest.layouts.interfaces.NodeLayout;
  */
 public abstract class FigureSubgraph extends DefaultSubgraph {
 
+	/**
+	 * Figure representing this subgraph, created lazily by
+	 * {@link #createFigure()}.
+	 */
 	protected IFigure figure;
 	private DisplayIndependentPoint location;
 	private boolean isLayoutBeingApplied = false;
@@ -74,6 +78,12 @@ public abstract class FigureSubgraph extends DefaultSubgraph {
 	 */
 	protected abstract void updateFigure();
 
+	/**
+	 * Returns the figure representing this subgraph, creating it and adding it
+	 * to the graph on first call.
+	 * 
+	 * @return figure of this subgraph
+	 */
 	public IFigure getFigure() {
 		if (figure == null) {
 			createFigure();
@@ -84,6 +94,14 @@ public abstract class FigureSubgraph extends DefaultSubgraph {
 		return figure;
 	}
 
+	/**
+	 * Creates a subgraph containing the given nodes.
+	 * 
+	 * @param nodes
+	 *            nodes initially contained in the subgraph
+	 * @param context
+	 *            layout context the subgraph belongs to
+	 */
 	protected FigureSubgraph(NodeLayout[] nodes, LayoutContext context) {
 		super(context);
 		addNodes(nodes);

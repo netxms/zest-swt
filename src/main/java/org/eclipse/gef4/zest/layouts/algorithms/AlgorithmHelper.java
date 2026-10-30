@@ -15,19 +15,33 @@ import org.eclipse.gef4.zest.layouts.dataStructures.DisplayIndependentPoint;
 import org.eclipse.gef4.zest.layouts.dataStructures.DisplayIndependentRectangle;
 import org.eclipse.gef4.zest.layouts.interfaces.EntityLayout;
 
+/**
+ * Static helper methods shared by layout algorithms: fitting entities into
+ * bounds, computing layout bounds and resizing nodes to fill available space.
+ */
 public class AlgorithmHelper {
 
+	/**
+	 * Smallest width or height (in layout units) a node may be shrunk to when
+	 * its size is adjusted to a preferred aspect ratio.
+	 */
 	public static int MIN_NODE_SIZE = 8;
 
+	/**
+	 * Fraction of the minimum distance between node centers that is used as
+	 * node size by {@link #maximizeSizes(EntityLayout[])}, so that neighbouring
+	 * nodes keep a gap between them.
+	 */
 	public static double PADDING_PERCENT = 0.8;
 
 	/**
 	 * Fits given entities within given bounds, preserving their relative
 	 * locations.
 	 * 
-	 * @param entities
-	 * @param destinationBounds
-	 * @param resize
+	 * @param entities entities to move (and optionally resize)
+	 * @param destinationBounds bounds to fit the entities into
+	 * @param resize true to scale the sizes of resizable entities by the same
+	 *            factor as their locations, false to keep sizes unchanged
 	 */
 	public static void fitWithinBounds(EntityLayout[] entities,
 			DisplayIndependentRectangle destinationBounds, boolean resize) {
@@ -94,7 +108,7 @@ public class AlgorithmHelper {
 	 * each other, with additional empty space of 20% of node's width (or
 	 * height, if bigger). It does nothing if there's less than two nodes.
 	 * 
-	 * @param entities
+	 * @param entities entities to resize
 	 */
 	public static void maximizeSizes(EntityLayout[] entities) {
 		if (entities.length > 1) {
@@ -145,6 +159,11 @@ public class AlgorithmHelper {
 	 * within the real bounds. The bounds can be determined either including the
 	 * size of the nodes or not. If the size is not included, the bounds will
 	 * only be guaranteed to include the center of each node.
+	 * 
+	 * @param entities entities whose bounds are computed
+	 * @param includeNodeSize true to enlarge the bounds so that whole nodes
+	 *            fit in, false to use node centers only
+	 * @return smallest rectangle enclosing the given entities
 	 */
 	public static DisplayIndependentRectangle getLayoutBounds(
 			EntityLayout[] entities, boolean includeNodeSize) {
@@ -194,7 +213,9 @@ public class AlgorithmHelper {
 	 *         |_______|
 	 * </pre>
 	 * 
-	 * 
+	 * @param entities entities to examine
+	 * @return horizontal and vertical distance between the centers of the two
+	 *         closest entities
 	 */
 	public static DisplayIndependentDimension getMinimumDistance(
 			EntityLayout[] entities) {

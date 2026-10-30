@@ -38,8 +38,23 @@ public interface EntityLayout {
 	 */
 	public void setLocation(double x, double y);
 
+	/**
+	 * Returns the size of this entity. Any subsequent changes to the returned
+	 * dimension won't affect this entity.
+	 * 
+	 * @return width and height of this entity
+	 */
 	public DisplayIndependentDimension getSize();
 
+	/**
+	 * Sets the size of this entity. Has no effect if the entity is not
+	 * resizable.
+	 * 
+	 * @param width
+	 *            new width of this entity
+	 * @param height
+	 *            new height of this entity
+	 */
 	public void setSize(double width, double height);
 
 	/**
@@ -50,8 +65,20 @@ public interface EntityLayout {
 	 */
 	public double getPreferredAspectRatio();
 
+	/**
+	 * Checks whether a layout algorithm is allowed to change the size of this
+	 * entity.
+	 * 
+	 * @return true if this entity can be resized by a layout algorithm
+	 */
 	public boolean isResizable();
 
+	/**
+	 * Checks whether a layout algorithm is allowed to change the location of
+	 * this entity.
+	 * 
+	 * @return true if this entity can be moved by a layout algorithm
+	 */
 	public boolean isMovable();
 
 	/**

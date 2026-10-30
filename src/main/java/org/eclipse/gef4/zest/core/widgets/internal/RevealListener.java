@@ -21,6 +21,12 @@ import org.eclipse.swt.widgets.Control;
  */
 public interface RevealListener {
 
+	/**
+	 * Called when the control has become visible.
+	 * 
+	 * @param c
+	 *            control that was revealed
+	 */
 	public void revealed(Control c);
 
 }

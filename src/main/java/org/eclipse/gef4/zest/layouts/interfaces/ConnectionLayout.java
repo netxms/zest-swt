@@ -9,10 +9,25 @@
  ******************************************************************************/
 package org.eclipse.gef4.zest.layouts.interfaces;
 
+/**
+ * A connection between two nodes as seen by layout algorithms.
+ */
 public interface ConnectionLayout {
 
+	/**
+	 * Returns the node this connection starts at. For undirected connections
+	 * this is just one of the two adjacent nodes.
+	 * 
+	 * @return source node of this connection
+	 */
 	public NodeLayout getSource();
 
+	/**
+	 * Returns the node this connection ends at. For undirected connections this
+	 * is just one of the two adjacent nodes.
+	 * 
+	 * @return target node of this connection
+	 */
 	public NodeLayout getTarget();
 
 	/**

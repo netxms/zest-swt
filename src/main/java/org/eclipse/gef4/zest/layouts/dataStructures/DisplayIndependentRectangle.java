@@ -18,8 +18,18 @@ package org.eclipse.gef4.zest.layouts.dataStructures;
  */
 public class DisplayIndependentRectangle {
 
-	public double x, y, width, height;
+	/** Horizontal coordinate of the top-left corner. */
+	public double x;
+	/** Vertical coordinate of the top-left corner. */
+	public double y;
+	/** Width of this rectangle. */
+	public double width;
+	/** Height of this rectangle. */
+	public double height;
 
+	/**
+	 * Creates an empty rectangle located at the origin.
+	 */
 	public DisplayIndependentRectangle() {
 		this.x = 0;
 		this.y = 0;
@@ -27,6 +37,14 @@ public class DisplayIndependentRectangle {
 		this.height = 0;
 	}
 
+	/**
+	 * Creates a rectangle with the given location and size.
+	 * 
+	 * @param x horizontal coordinate of the top-left corner
+	 * @param y vertical coordinate of the top-left corner
+	 * @param width width of the new rectangle
+	 * @param height height of the new rectangle
+	 */
 	public DisplayIndependentRectangle(double x, double y, double width,
 			double height) {
 		this.x = x;
@@ -35,6 +53,11 @@ public class DisplayIndependentRectangle {
 		this.height = height;
 	}
 
+	/**
+	 * Creates a copy of the given rectangle.
+	 * 
+	 * @param rect rectangle to copy
+	 */
 	public DisplayIndependentRectangle(DisplayIndependentRectangle rect) {
 		this.x = rect.x;
 		this.y = rect.y;
@@ -46,6 +69,12 @@ public class DisplayIndependentRectangle {
 		return "(" + x + ", " + y + ", " + width + ", " + height + ")";
 	}
 
+	/**
+	 * Checks whether this rectangle overlaps the given rectangle.
+	 * 
+	 * @param rect rectangle to test against
+	 * @return true if the two rectangles share a region of non-zero area
+	 */
 	public boolean intersects(DisplayIndependentRectangle rect) {
 		return rect.x < x + width && rect.y < y + height
 				&& rect.x + rect.width > x && rect.y + rect.height > y;

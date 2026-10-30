@@ -1131,6 +1131,7 @@ public class SpaceTreeLayoutAlgorithm implements LayoutAlgorithm {
 	/**
 	 * Sets the distance between leaf nodes. Default value is 15.
 	 * 
+	 * @param value distance between neighbouring leaf nodes, in layout units
 	 */
 	public void setLeafGap(double value) {
 		this.leafGap = value;
@@ -1139,6 +1140,7 @@ public class SpaceTreeLayoutAlgorithm implements LayoutAlgorithm {
 	/**
 	 * Sets the distance between branches. Default value is 20.
 	 * 
+	 * @param value distance between neighbouring subtrees, in layout units
 	 */
 	public void setBranchGap(double value) {
 		this.branchGap = value;
@@ -1147,19 +1149,35 @@ public class SpaceTreeLayoutAlgorithm implements LayoutAlgorithm {
 	/**
 	 * Sets the distance between layers. Default value is 20.
 	 * 
+	 * @param value distance between neighbouring tree levels, in layout units
 	 */
 	public void setLayerGap(double value) {
 		this.layerGap = value;
 	}
 
+	/**
+	 * Returns the distance between leaf nodes.
+	 * 
+	 * @return distance between neighbouring leaf nodes, in layout units
+	 */
 	public double getLeafGap() {
 		return this.leafGap;
 	}
 
+	/**
+	 * Returns the distance between branches.
+	 * 
+	 * @return distance between neighbouring subtrees, in layout units
+	 */
 	public double getBranchGap() {
 		return this.branchGap;
 	}
 
+	/**
+	 * Returns the distance between layers.
+	 * 
+	 * @return distance between neighbouring tree levels, in layout units
+	 */
 	public double getLayerGap() {
 		return this.layerGap;
 	}
@@ -1304,6 +1322,12 @@ public class SpaceTreeLayoutAlgorithm implements LayoutAlgorithm {
 		throw new RuntimeException();
 	}
 
+	/**
+	 * Applies pending collapse, location and expansion changes to the layout
+	 * context, if background layout is enabled.
+	 * 
+	 * @param animation true to let the context animate the changes
+	 */
 	protected void refreshLayout(boolean animation) {
 		if (!context.isBackgroundLayoutEnabled())
 			return;

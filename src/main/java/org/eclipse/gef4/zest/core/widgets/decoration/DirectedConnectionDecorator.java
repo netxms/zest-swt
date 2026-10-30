@@ -12,6 +12,10 @@ import org.eclipse.draw2d.PolygonDecoration;
 import org.eclipse.draw2d.RotatableDecoration;
 import org.eclipse.gef4.zest.core.widgets.GraphConnection;
 
+/**
+ * Connection decorator that draws an arrow head at the target end of the
+ * connection, sized according to the connection's line width.
+ */
 public class DirectedConnectionDecorator extends AbstractConnectionDecorator {
 
 	public RotatableDecoration createSourceDecoration(GraphConnection connection) {

@@ -99,8 +99,10 @@ public final class ZestStyles {
 	 * Bitwise ANDs the styleToCheck integer with the given style.
 	 * 
 	 * @param style
+	 *            combined style bits to test
 	 * @param styleToCheck
-	 * @return boolean if styleToCheck is part of the style
+	 *            style bits that must all be present
+	 * @return true if styleToCheck is part of the style
 	 */
 	public static boolean checkStyle(int style, int styleToCheck) {
 		return ((style & styleToCheck) == styleToCheck);

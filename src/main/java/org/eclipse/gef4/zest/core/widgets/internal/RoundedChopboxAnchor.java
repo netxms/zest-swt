@@ -26,12 +26,26 @@ public class RoundedChopboxAnchor extends ChopboxAnchor {
 	private int arcRadius = 10;
 	private int shift = 7;
 
+	/**
+	 * Creates an anchor without an owner.
+	 * 
+	 * @param arcRadius
+	 *            radius of the owner's rounded corners
+	 */
 	public RoundedChopboxAnchor(int arcRadius) {
 		super();
 		this.arcRadius = arcRadius;
 		this.shift = arcRadius - (int) (0.707 * arcRadius);
 	}
 
+	/**
+	 * Creates an anchor on the given figure.
+	 * 
+	 * @param owner
+	 *            figure the connection is attached to
+	 * @param arcRadius
+	 *            radius of the owner's rounded corners
+	 */
 	public RoundedChopboxAnchor(IFigure owner, int arcRadius) {
 		super(owner);
 		this.arcRadius = arcRadius;

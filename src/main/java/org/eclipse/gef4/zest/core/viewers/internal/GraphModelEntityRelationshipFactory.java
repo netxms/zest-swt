@@ -18,8 +18,10 @@ import org.eclipse.gef4.zest.core.widgets.Graph;
 import org.eclipse.gef4.zest.core.widgets.GraphContainer;
 import org.eclipse.gef4.zest.core.widgets.GraphNode;
 
-/*
- * A factory for the IGraphEntityRelationshipContentProvider.
+/**
+ * Model factory for viewers whose content provider is an
+ * {@code IGraphEntityRelationshipContentProvider}: nodes come from the content
+ * provider's elements and connections from its relationship queries.
  * 
  * @author Del Myers
  */
@@ -29,6 +31,14 @@ import org.eclipse.gef4.zest.core.widgets.GraphNode;
 public class GraphModelEntityRelationshipFactory extends
 		AbstractStylingModelFactory {
 
+	/**
+	 * Creates a factory building the model for the given viewer.
+	 * 
+	 * @param viewer
+	 *            the viewer this factory builds the graph model for; its
+	 *            content provider must be an
+	 *            {@code IGraphEntityRelationshipContentProvider}
+	 */
 	public GraphModelEntityRelationshipFactory(
 			AbstractStructuredGraphViewer viewer) {
 		super(viewer);

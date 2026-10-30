@@ -17,13 +17,27 @@ package org.eclipse.gef4.zest.layouts.dataStructures;
  * @author Casey Best
  */
 public class DisplayIndependentDimension {
-	public double width, height;
+	/** Width of this dimension. */
+	public double width;
+	/** Height of this dimension. */
+	public double height;
 
+	/**
+	 * Creates a dimension with the given width and height.
+	 * 
+	 * @param width width of the new dimension
+	 * @param height height of the new dimension
+	 */
 	public DisplayIndependentDimension(double width, double height) {
 		this.width = width;
 		this.height = height;
 	}
 
+	/**
+	 * Creates a copy of the given dimension.
+	 * 
+	 * @param dimension dimension to copy
+	 */
 	public DisplayIndependentDimension(DisplayIndependentDimension dimension) {
 		this.width = dimension.width;
 		this.height = dimension.height;

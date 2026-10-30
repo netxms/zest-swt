@@ -13,18 +13,32 @@ package org.eclipse.gef4.zest.layouts.algorithms;
 import org.eclipse.gef4.zest.layouts.LayoutAlgorithm;
 import org.eclipse.gef4.zest.layouts.interfaces.LayoutContext;
 
+/**
+ * Layout algorithm that applies several layout algorithms one after another,
+ * each starting from the result of the previous one.
+ */
 public class CompositeLayoutAlgorithm implements LayoutAlgorithm {
 
 	private LayoutAlgorithm[] algorithms = null;
 
+	/**
+	 * Creates a composite of the given algorithms.
+	 * 
+	 * @param algorithms algorithms to apply, in order
+	 */
 	public CompositeLayoutAlgorithm(LayoutAlgorithm[] algorithms) {
 		this.algorithms = algorithms;
 	}
 
 	/**
+	 * Creates a composite of the given algorithms.
+	 * 
+	 * @param style ignored
+	 * @param layoutAlgorithms algorithms to apply, in order
 	 * @deprecated Since Zest 2.0, use
 	 *             {@link #CompositeLayoutAlgorithm(LayoutAlgorithm[])}
 	 */
+	@Deprecated
 	public CompositeLayoutAlgorithm(int style,
 			LayoutAlgorithm[] layoutAlgorithms) {
 		this(layoutAlgorithms);

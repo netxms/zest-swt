@@ -22,28 +22,64 @@ import org.eclipse.gef4.zest.layouts.interfaces.LayoutContext;
  * @author Ian Bull
  * @author Casey Best and Rob Lintern
  */
+/**
+ * Layout algorithm that places entities in cells of a grid, in the order they
+ * are returned by the layout context. The number of rows and columns is chosen
+ * to fill the available bounds.
+ */
 public class GridLayoutAlgorithm implements LayoutAlgorithm {
 
 	private static final double PADDING_PERCENTAGE = 0.95;
 	private static final int MIN_ENTITY_SIZE = 5;
 
+	/** Preferred width to height ratio of layout entities. */
 	protected double aspectRatio = 1.0;
+	/** Vertical space left free in each row, in layout units. */
 	protected int rowPadding = 0;
 	private boolean resize = false;
-	protected int rows, cols, numChildren;
-	protected double colWidth, rowHeight, offsetX, offsetY;
-	protected double childrenHeight, childrenWidth;
+	/** Number of rows in the grid, set by {@link #calculateGrid}. */
+	protected int rows;
+	/** Number of columns in the grid, set by {@link #calculateGrid}. */
+	protected int cols;
+	/** Number of entities to lay out, set by {@link #calculateGrid}. */
+	protected int numChildren;
+	/** Width of one grid column, set by {@link #calculateGrid}. */
+	protected double colWidth;
+	/** Height of one grid row, set by {@link #calculateGrid}. */
+	protected double rowHeight;
+	/**
+	 * Horizontal gap between a cell edge and the entity in it, set by
+	 * {@link #calculateGrid}.
+	 */
+	protected double offsetX;
+	/**
+	 * Vertical gap between a cell edge and the entity in it, set by
+	 * {@link #calculateGrid}.
+	 */
+	protected double offsetY;
+	/** Height given to each entity, set by {@link #calculateGrid}. */
+	protected double childrenHeight;
+	/** Width given to each entity, set by {@link #calculateGrid}. */
+	protected double childrenWidth;
 
 	private LayoutContext context;
 
 	/**
+	 * Creates a grid layout that resizes entities unless style is
+	 * {@link LayoutStyles#NO_LAYOUT_NODE_RESIZING}.
+	 * 
+	 * @param style layout style flags
 	 * @deprecated Since Zest 2.0, use {@link #GridLayoutAlgorithm()}.
 	 */
+	@Deprecated
 	public GridLayoutAlgorithm(int style) {
 		this();
 		setResizing(style != LayoutStyles.NO_LAYOUT_NODE_RESIZING);
 	}
 
+	/**
+	 * Creates a grid layout that does not resize entities.
+	 */
 	public GridLayoutAlgorithm() {
 	}
 
@@ -65,7 +101,7 @@ public class GridLayoutAlgorithm implements LayoutAlgorithm {
 	 * {@link #rows}, {@link #cols}, {@link #colWidth}, {@link #rowHeight},
 	 * {@link #offsetX}, {@link #offsetY}
 	 * 
-	 * @param bounds
+	 * @param bounds bounds the grid has to fit in
 	 */
 	protected void calculateGrid(DisplayIndependentRectangle bounds) {
 		numChildren = context.getNodes().length;
@@ -122,6 +158,13 @@ public class GridLayoutAlgorithm implements LayoutAlgorithm {
 	/**
 	 * Calculates and returns an array containing the number of columns,
 	 * followed by the number of rows
+	 * 
+	 * @param numChildren number of entities to place in the grid
+	 * @param boundX horizontal coordinate of the layout bounds
+	 * @param boundY vertical coordinate of the layout bounds
+	 * @param boundWidth width of the layout bounds
+	 * @param boundHeight height of the layout bounds
+	 * @return two-element array: number of columns, then number of rows
 	 */
 	protected int[] calculateNumberOfRowsAndCols(int numChildren,
 			double boundX, double boundY, double boundWidth, double boundHeight) {
@@ -133,6 +176,18 @@ public class GridLayoutAlgorithm implements LayoutAlgorithm {
 		}
 	}
 
+	/**
+	 * Calculates grid size for square entities (aspect ratio 1): rows and
+	 * columns are chosen so that cells are as close to square as the bounds
+	 * allow while still holding all entities.
+	 * 
+	 * @param numChildren number of entities to place in the grid
+	 * @param boundX horizontal coordinate of the layout bounds
+	 * @param boundY vertical coordinate of the layout bounds
+	 * @param boundWidth width of the layout bounds
+	 * @param boundHeight height of the layout bounds
+	 * @return two-element array: number of columns, then number of rows
+	 */
 	protected int[] calculateNumberOfRowsAndCols_square(int numChildren,
 			double boundX, double boundY, double boundWidth, double boundHeight) {
 		int rows = Math.max(1,
@@ -178,6 +233,13 @@ public class GridLayoutAlgorithm implements LayoutAlgorithm {
 		return result;
 	}
 
+	/**
+	 * Calculates grid size for entities with a non-square aspect ratio: the
+	 * grid has as many rows as columns, enough to hold all entities.
+	 * 
+	 * @param numChildren number of entities to place in the grid
+	 * @return two-element array: number of columns, then number of rows
+	 */
 	protected int[] calculateNumberOfRowsAndCols_rectangular(int numChildren) {
 		int rows = Math.max(1, (int) Math.ceil(Math.sqrt(numChildren)));
 		int cols = Math.max(1, (int) Math.ceil(Math.sqrt(numChildren)));
@@ -185,6 +247,15 @@ public class GridLayoutAlgorithm implements LayoutAlgorithm {
 		return result;
 	}
 
+	/**
+	 * Calculates the size of an entity that fits in one grid cell with some
+	 * padding around it, honouring {@link #aspectRatio} and
+	 * {@link #rowPadding}.
+	 * 
+	 * @param colWidth width of a grid column
+	 * @param rowHeight height of a grid row
+	 * @return two-element array: entity width, then entity height
+	 */
 	protected double[] calculateNodeSize(double colWidth, double rowHeight) {
 		double childW = Math
 				.max(MIN_ENTITY_SIZE, PADDING_PERCENTAGE * colWidth);

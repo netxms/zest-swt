@@ -34,7 +34,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Display;
 
-/*
+/**
  * This is the graph connection model which stores the source and destination
  * nodes and the properties of this connection (color, line width etc).
  * 
@@ -80,6 +80,21 @@ public class GraphConnection extends GraphItem {
 
 	private IConnectionDecorator connectionDecorator = null;
 
+	/**
+	 * Creates a connection between two nodes and registers it with both nodes
+	 * and with the graph. The connection style is the graph's default
+	 * connection style combined with the given style bits.
+	 * 
+	 * @param graphModel
+	 *            graph that owns this connection
+	 * @param style
+	 *            connection style bits (the CONNECTION constants in
+	 *            {@link ZestStyles})
+	 * @param source
+	 *            node the connection starts from
+	 * @param destination
+	 *            node the connection ends at
+	 */
 	public GraphConnection(Graph graphModel, int style, GraphNode source,
 			GraphNode destination) {
 		super(graphModel, style);
@@ -182,10 +197,21 @@ public class GraphConnection extends GraphItem {
 		}
 	}
 
+	/**
+	 * Returns whether {@link #dispose()} has been called on this connection.
+	 * 
+	 * @return true if this connection has been disposed
+	 */
 	public boolean isDisposed() {
 		return isDisposed;
 	}
 
+	/**
+	 * Returns the draw2d figure that draws this connection, creating it on
+	 * first use.
+	 * 
+	 * @return the connection figure
+	 */
 	public Connection getConnectionFigure() {
 		if (connectionFigure == null) {
 			connectionFigure = doCreateFigure();
@@ -199,6 +225,7 @@ public class GraphConnection extends GraphItem {
 	 * @return Object
 	 * @deprecated Use {@link #getData()} instead
 	 */
+	@Deprecated
 	public Object getExternalConnection() {
 		return this.getData();
 	}
@@ -230,9 +257,11 @@ public class GraphConnection extends GraphItem {
 	}
 
 	/**
-	 * Returns the style of this connection. Valid styles are those that begin
-	 * with CONNECTION in ZestStyles.
+	 * Sets the style of this connection and updates its figure. Valid styles
+	 * are those that begin with CONNECTION in ZestStyles.
 	 * 
+	 * @param style
+	 *            the new connection style bits
 	 * @see ZestStyles
 	 */
 	public void setConnectionStyle(int style) {
@@ -256,7 +285,7 @@ public class GraphConnection extends GraphItem {
 	/**
 	 * Gets the font for the label on this connection
 	 * 
-	 * @return
+	 * @return the label font
 	 */
 	public Font getFont() {
 		return this.font;
@@ -265,6 +294,8 @@ public class GraphConnection extends GraphItem {
 	/**
 	 * Sets the font for the label on this connection.
 	 * 
+	 * @param f
+	 *            the font to use for the connection label
 	 */
 	public void setFont(Font f) {
 		this.font = f;
@@ -277,6 +308,9 @@ public class GraphConnection extends GraphItem {
 	 * apart). A weight of 1 results in the minimum spring length being used
 	 * (closest together).
 	 * 
+	 * @param weight
+	 *            the new weight; values below 0 are stored as -1 and values
+	 *            above 1 are stored as 1
 	 */
 	public void setWeight(double weight) {
 		if (weight < 0) {
@@ -332,6 +366,7 @@ public class GraphConnection extends GraphItem {
 	 * Sets the connection color.
 	 * 
 	 * @param color
+	 *            the color used to draw the connection line
 	 */
 	public void changeLineColor(Color color) {
 		this.color = color;
@@ -342,6 +377,9 @@ public class GraphConnection extends GraphItem {
 	 * Sets the tooltip on this node. This tooltip will display if the mouse
 	 * hovers over the node. Setting the tooltip has no effect if a custom
 	 * figure has been set.
+	 * 
+	 * @param tooltip
+	 *            figure shown as the tooltip of this connection
 	 */
 	public void setTooltip(IFigure tooltip) {
 		hasCustomTooltip = true;
@@ -352,6 +390,8 @@ public class GraphConnection extends GraphItem {
 	/**
 	 * Gets the current tooltip for this node. The tooltip returned is
 	 * meaningless if a custom figure has been set.
+	 * 
+	 * @return the tooltip figure, or null if none has been set
 	 */
 	public IFigure getTooltip() {
 		return this.tooltip;
@@ -370,6 +410,7 @@ public class GraphConnection extends GraphItem {
 	 * Sets the connection line width.
 	 * 
 	 * @param lineWidth
+	 *            the line width in pixels
 	 */
 	public void setLineWidth(int lineWidth) {
 		this.lineWidth = lineWidth;
@@ -389,6 +430,7 @@ public class GraphConnection extends GraphItem {
 	 * Sets the connection line style.
 	 * 
 	 * @param lineStyle
+	 *            one of the SWT LINE_* constants (solid, dash, dot, etc.)
 	 */
 	public void setLineStyle(int lineStyle) {
 		this.lineStyle = lineStyle;
@@ -448,7 +490,7 @@ public class GraphConnection extends GraphItem {
 	/**
 	 * Returns true if this connection is highlighted, false otherwise
 	 * 
-	 * @return
+	 * @return true if this connection is highlighted
 	 */
 	public boolean isHighlighted() {
 		return highlighted;
@@ -553,6 +595,10 @@ public class GraphConnection extends GraphItem {
 	}
 
 	/**
+	 * Returns whether this connection is directed, i.e. has the
+	 * {@link ZestStyles#CONNECTIONS_DIRECTED} style set.
+	 * 
+	 * @return true if this connection is directed
 	 * @since 2.0
 	 */
 	public boolean isDirected() {
@@ -561,6 +607,12 @@ public class GraphConnection extends GraphItem {
 	}
 
 	/**
+	 * Sets or clears the {@link ZestStyles#CONNECTIONS_DIRECTED} style on
+	 * this connection.
+	 * 
+	 * @param directed
+	 *            true to make this connection directed, false to make it
+	 *            undirected
 	 * @since 2.0
 	 */
 	public void setDirected(boolean directed) {
@@ -772,12 +824,22 @@ public class GraphConnection extends GraphItem {
 	 * Sets the connection router of the connection
 	 * 
 	 * @param router
+	 *            router used to compute the path of the connection figure
 	 * @since 2.0
 	 */
 	public void setRouter(ConnectionRouter router) {
 		this.router = router;
 	}
 
+	/**
+	 * Sets the decorator that adds arrow heads and other decorations to this
+	 * connection's figure. If a figure already exists it is decorated again
+	 * immediately.
+	 * 
+	 * @param connectionDecorator
+	 *            the decorator to use, or null to use the graph's default
+	 *            decorator
+	 */
 	public void setConnectionDecoration(IConnectionDecorator connectionDecorator) {
 		this.connectionDecorator = connectionDecorator;
 		if (connectionFigure != null) {

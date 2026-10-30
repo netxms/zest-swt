@@ -27,6 +27,11 @@ import org.eclipse.draw2d.geometry.PointList;
 // polyline connection.
 // This will be more accurate than the regular ArcConnection, but it may be
 // slower.
+/**
+ * A connection drawn as a circular arc between its two anchors, approximated by
+ * a polyline. The arc's curvature is given by its depth: the distance from the
+ * chord between the anchors to the farthest point of the arc.
+ */
 public class PolylineArcConnection extends PolylineConnection {
 	private int depth;
 	private boolean inverse = false;
@@ -66,6 +71,13 @@ public class PolylineArcConnection extends PolylineConnection {
 		updateArc(getPoints());
 	}
 
+	/**
+	 * Recomputes the polyline approximating the arc between the first and last
+	 * point of the given list and makes it the connection's point list.
+	 * 
+	 * @param pointList
+	 *            points whose first and last entries are the arc's end points
+	 */
 	protected void updateArc(PointList pointList) {
 		if (pointList.size() < 2) {
 			return;
@@ -242,6 +254,16 @@ public class PolylineArcConnection extends PolylineConnection {
 	}
 
 	// find the quadrant, assume points are centered at 0,0
+	/**
+	 * Finds the quadrant of a point relative to the origin.
+	 * 
+	 * @param x
+	 *            horizontal coordinate
+	 * @param y
+	 *            vertical coordinate
+	 * @return 1 for x &gt; 0, y &gt; 0; 2 for x &lt;= 0, y &gt; 0; 3 for x
+	 *         &lt;= 0, y &lt;= 0; 4 for x &gt; 0, y &lt;= 0
+	 */
 	protected int findQuadrant(float x, float y) {
 		if (y > 0) {
 			if (x > 0) {

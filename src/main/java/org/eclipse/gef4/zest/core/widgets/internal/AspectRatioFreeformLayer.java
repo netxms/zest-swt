@@ -27,12 +27,23 @@ import org.eclipse.draw2d.text.CaretInfo;
 
 // @tag zest.bug.156286-Scaling.fix : make this implement scalable figure so
 // that a zoom manager can be used on GraphEditParts.
+/**
+ * A freeform layer that can be scaled independently in the horizontal and
+ * vertical directions, so that its children are stretched to fit a given
+ * aspect ratio.
+ */
 public class AspectRatioFreeformLayer extends FreeformLayer implements
 		ScalableFigure, FreeformFigure {
 
 	private double widthScale = 1.0;
 	private double heigthScale = 1.0;
 
+	/**
+	 * Creates an unscaled layer with a freeform layout and a 5 pixel margin.
+	 * 
+	 * @param debugLabel
+	 *            label identifying the layer; not used
+	 */
 	public AspectRatioFreeformLayer(String debugLabel) {
 		widthScale = 1D;
 		heigthScale = 1D;
@@ -46,15 +57,29 @@ public class AspectRatioFreeformLayer extends FreeformLayer implements
 		return true;
 	}
 
+	/**
+	 * Sets horizontal and vertical scale factors.
+	 * 
+	 * @param wScale
+	 *            horizontal scale factor
+	 * @param hScale
+	 *            vertical scale factor
+	 */
 	public void setScale(double wScale, double hScale) {
 		this.widthScale = wScale;
 		this.heigthScale = hScale;
 	}
 
+	/**
+	 * @return horizontal scale factor
+	 */
 	public double getWidthScale() {
 		return this.widthScale;
 	}
 
+	/**
+	 * @return vertical scale factor
+	 */
 	public double getHeightScale() {
 		return this.heigthScale;
 	}
@@ -64,6 +89,12 @@ public class AspectRatioFreeformLayer extends FreeformLayer implements
 	 * return true; }
 	 */
 
+	/**
+	 * Not supported: this layer has separate scales for each axis, use
+	 * {@link #getWidthScale()} and {@link #getHeightScale()}.
+	 * 
+	 * @return never returns; always throws RuntimeException
+	 */
 	public double getScale() {
 		// TODO Auto-generated method stub
 		throw new RuntimeException("Operation not supported");

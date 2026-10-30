@@ -11,6 +11,10 @@ package org.eclipse.gef4.zest.layouts.interfaces;
 
 import org.eclipse.gef4.zest.layouts.LayoutAlgorithm;
 
+/**
+ * Listener notified when nodes of a {@link LayoutContext} are pruned into
+ * subgraphs or unpruned.
+ */
 public interface PruningListener {
 
 	/**

@@ -11,7 +11,15 @@ package org.eclipse.gef4.zest.layouts.interfaces;
 
 import org.eclipse.gef4.zest.layouts.LayoutAlgorithm;
 
+/**
+ * Listener notified about changes of a {@link LayoutContext} itself: its
+ * bounds, pruning enablement and background layout enablement.
+ */
 public interface ContextListener {
+	/**
+	 * Empty implementation of {@link ContextListener} that intercepts no
+	 * events; subclass it and override only the methods of interest.
+	 */
 	public class Stub implements ContextListener {
 
 		public boolean boundsChanged(LayoutContext context) {

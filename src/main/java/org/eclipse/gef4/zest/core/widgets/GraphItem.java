@@ -23,28 +23,60 @@ import org.eclipse.swt.widgets.Widget;
  */
 public abstract class GraphItem extends Item {
 
+	/** Item type returned by {@link #getItemType()} for a {@link Graph}. */
 	public static final int GRAPH = 0;
+	/** Item type returned by {@link #getItemType()} for a {@link GraphNode}. */
 	public static final int NODE = 1;
+	/** Item type returned by {@link #getItemType()} for a {@link GraphConnection}. */
 	public static final int CONNECTION = 2;
+	/** Item type returned by {@link #getItemType()} for a {@link GraphContainer}. */
 	public static final int CONTAINER = 3;
 
 	/**
+	 * Creates a graph item as a child of the given widget. The
+	 * {@link SWT#NO_BACKGROUND} style bit is always added.
+	 * 
 	 * @param parent
+	 *            widget (usually the graph) that owns this item
 	 * @param style
+	 *            SWT style bits for this item
 	 */
 	public GraphItem(Widget parent, int style) {
 		super(parent, style | SWT.NO_BACKGROUND);
 	}
 
 	/**
+	 * Creates a graph item as a child of the given widget and attaches the
+	 * given application data to it.
+	 * 
+	 * @param parent
+	 *            widget (usually the graph) that owns this item
+	 * @param style
+	 *            SWT style bits for this item
+	 * @param data
+	 *            application data to store with {@link #setData(Object)}, or
+	 *            null to store nothing
 	 * @deprecated Since Zest 2.0, use {@link #GraphItem(Graph, int)} and
 	 *             {@link #setData(Object)}
 	 */
+	@Deprecated
 	public GraphItem(Widget parent, int style, Object data) {
 		this(parent, style | SWT.NO_BACKGROUND);
 		setDataChecked(data);
 	}
 
+	/**
+	 * Creates a graph item inside the given container. The item is owned by
+	 * the container's graph.
+	 * 
+	 * @param parent
+	 *            container (graph or graph container) that holds this item
+	 * @param style
+	 *            SWT style bits for this item
+	 * @param data
+	 *            application data to store with {@link #setData(Object)}, or
+	 *            null to store nothing
+	 */
 	protected GraphItem(IContainer parent, int style, Object data) {
 		this(parent.getGraph(), style | SWT.NO_BACKGROUND);
 		setDataChecked(data);
@@ -71,7 +103,8 @@ public abstract class GraphItem extends Item {
 	 * Gets the graph item type. The item type is one of: GRAPH, NODE or
 	 * CONNECTION
 	 * 
-	 * @return
+	 * @return one of {@link #GRAPH}, {@link #NODE}, {@link #CONNECTION} or
+	 *         {@link #CONTAINER}
 	 */
 	public abstract int getItemType();
 
@@ -118,7 +151,7 @@ public abstract class GraphItem extends Item {
 	 * 
 	 * @param styleToCheck
 	 *            The style to check
-	 * @return
+	 * @return true if any bit of the given style is set on this item
 	 */
 	protected boolean checkStyle(int styleToCheck) {
 		return ((getStyle() & styleToCheck) > 0);

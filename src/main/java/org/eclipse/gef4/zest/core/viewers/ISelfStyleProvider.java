@@ -21,11 +21,21 @@ public interface ISelfStyleProvider {
 
 	/**
 	 * Styles a connection
+	 * 
+	 * @param element
+	 *            the model element the connection was created for
+	 * @param connection
+	 *            the connection widget to style
 	 */
 	public void selfStyleConnection(Object element, GraphConnection connection);
 
 	/**
 	 * Styles a node
+	 * 
+	 * @param element
+	 *            the model element the node was created for
+	 * @param node
+	 *            the node widget to style
 	 */
 	public void selfStyleNode(Object element, GraphNode node);
 

@@ -85,12 +85,29 @@ public class AligningBendpointLocator extends AbstractLocator {
 	private Connection connection;
 
 	/**
+	 * Creates a locator placing figures at the center of the connection,
+	 * in the middle of the line.
+	 * 
 	 * @param connection
+	 *            connection to locate figures on
 	 */
 	public AligningBendpointLocator(Connection connection) {
 		this(connection, CENTER, MIDDLE);
 	}
 
+	/**
+	 * Creates a locator with the given alignment.
+	 * 
+	 * @param connection
+	 *            connection to locate figures on
+	 * @param horizontal
+	 *            horizontal alignment: {@link #CENTER}, {@link #BEGINNING},
+	 *            {@link #END}, {@link #CENTER_BEGINNING} or
+	 *            {@link #CENTER_END}
+	 * @param vertical
+	 *            vertical alignment: {@link #MIDDLE}, {@link #ABOVE} or
+	 *            {@link #BELOW}
+	 */
 	public AligningBendpointLocator(Connection connection, int horizontal,
 			int vertical) {
 		this.connection = connection;

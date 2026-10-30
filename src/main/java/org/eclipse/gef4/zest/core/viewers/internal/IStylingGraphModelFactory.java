@@ -54,6 +54,8 @@ public interface IStylingGraphModelFactory {
 	 * provider and the label provider returned in getContentProvider() and
 	 * getLabelProvider().
 	 * 
+	 * @param model
+	 *            the graph widget to populate with nodes and connections
 	 * @return the created graph model.
 	 */
 	public Graph createGraphModel(Graph model);
@@ -120,6 +122,7 @@ public interface IStylingGraphModelFactory {
 	 * currently exist in the view. No restyling is done by default.
 	 * 
 	 * @param graph
+	 *            the graph to find the element on.
 	 * @param element
 	 *            the element to restructure.
 	 */
@@ -155,6 +158,12 @@ public interface IStylingGraphModelFactory {
 	 */
 	public StructuredViewer getViewer();
 
+	/**
+	 * Sets the default style applied to connections created by this factory.
+	 * 
+	 * @param style
+	 *            connection style bits (see {@code ZestStyles.CONNECTIONS_*})
+	 */
 	public void setConnectionStyle(int style);
 
 	/**
@@ -162,6 +171,12 @@ public interface IStylingGraphModelFactory {
 	 */
 	public int getConnectionStyle();
 
+	/**
+	 * Sets the default style applied to nodes created by this factory.
+	 * 
+	 * @param style
+	 *            node style bits (see {@code ZestStyles.NODES_*})
+	 */
 	public void setNodeStyle(int style);
 
 	/**

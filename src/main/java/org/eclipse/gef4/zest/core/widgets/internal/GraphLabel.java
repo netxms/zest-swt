@@ -257,26 +257,47 @@ public class GraphLabel extends CachedLabel implements IStyleableFigure {
 		adjustBoundsToFit();
 	}
 
+	/**
+	 * @return color of the border drawn around the label
+	 */
 	public Color getBorderColor() {
 		return borderColor;
 	}
 
+	/**
+	 * @param c
+	 *            color of the border drawn around the label
+	 */
 	public void setBorderColor(Color c) {
 		this.borderColor = c;
 	}
 
+	/**
+	 * @return width of the border in pixels
+	 */
 	public int getBorderWidth() {
 		return borderWidth;
 	}
 
+	/**
+	 * @param width
+	 *            width of the border in pixels
+	 */
 	public void setBorderWidth(int width) {
 		this.borderWidth = width;
 	}
 
+	/**
+	 * @return diameter of the rounded corners
+	 */
 	public int getArcWidth() {
 		return arcWidth;
 	}
 
+	/**
+	 * @param arcWidth
+	 *            diameter of the rounded corners
+	 */
 	public void setArcWidth(int arcWidth) {
 		this.arcWidth = arcWidth;
 	}

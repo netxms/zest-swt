@@ -19,12 +19,19 @@ package org.eclipse.gef4.zest.core.viewers;
  * @author Del Myers
  */
 public final class EntityConnectionData {
+	/** User model object the connection starts at. */
 	public final Object source;
+	/** User model object the connection ends at. */
 	public final Object dest;
 
 	/**
 	 * Creates a new entity connection data. The source and dest are users
 	 * nodes.
+	 * 
+	 * @param source
+	 *            user model object the connection starts at
+	 * @param dest
+	 *            user model object the connection ends at
 	 */
 	public EntityConnectionData(Object source, Object dest) {
 		/*

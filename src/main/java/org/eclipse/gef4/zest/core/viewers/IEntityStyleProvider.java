@@ -30,7 +30,7 @@ import org.eclipse.swt.graphics.Color;
  * 
  * @author Del Myers
  * @see org.eclipse.jface.viewers.IColorProvider
- * @tag bug(151327-Styles) : created to solve this bug
+ * Tag: bug(151327-Styles) : created to solve this bug
  */
 public interface IEntityStyleProvider {
 
@@ -110,6 +110,15 @@ public interface IEntityStyleProvider {
 	 */
 	public Color getBackgroundColour(Object entity);
 
+	/**
+	 * Returns the foreground (text) colour of this entity. May return null for
+	 * defaults. Any resources created by this class must be disposed by this
+	 * class.
+	 * 
+	 * @param entity
+	 *            The entity to be styled
+	 * @return The foreground colour for the node, or null for the default
+	 */
 	public Color getForegroundColour(Object entity);
 
 	/**
@@ -117,10 +126,19 @@ public interface IEntityStyleProvider {
 	 * use the default tooltip.
 	 * 
 	 * @param entity
-	 * @return
+	 *            The entity to be styled
+	 * @return The tooltip figure, or null to use the default tooltip
 	 */
 	public IFigure getTooltip(Object entity);
 
+	/**
+	 * Determines whether the node for this entity should be shown with a
+	 * fisheye effect on mouse hover ({@code ZestStyles.NODES_FISHEYE}).
+	 * 
+	 * @param entity
+	 *            The entity to be styled
+	 * @return true if the fisheye effect should be enabled for the node
+	 */
 	public boolean fisheyeNode(Object entity);
 
 }

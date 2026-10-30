@@ -61,15 +61,38 @@ import org.eclipse.swt.graphics.Color;
  */
 public class TriangleSubgraph extends FigureSubgraph {
 
+	/**
+	 * Visual parameters of a triangle subgraph: color, direction and the
+	 * reference size the triangle is scaled from.
+	 */
 	public static class TriangleParameters implements Cloneable {
+		/**
+		 * Fill color of the triangle.
+		 */
 		public Color color = ColorConstants.black;
 
+		/**
+		 * Direction the triangle points to: {@link SubgraphLayout#TOP_DOWN},
+		 * {@link SubgraphLayout#BOTTOM_UP}, {@link SubgraphLayout#LEFT_RIGHT}
+		 * or {@link SubgraphLayout#RIGHT_LEFT}.
+		 */
 		public int direction = TOP_DOWN;
 
+		/**
+		 * Height of a triangle representing a subgraph of reference size; the
+		 * actual height is scaled by the subgraph's depth and node count.
+		 */
 		public double referenceHeight = 50;
 
+		/**
+		 * Base length of a triangle representing a subgraph of reference size;
+		 * the actual base is scaled by the subgraph's depth and node count.
+		 */
 		public double referenceBase = 50;
 
+		/**
+		 * @return a copy of these parameters
+		 */
 		public Object clone() {
 			TriangleParameters result = new TriangleParameters();
 			result.color = color;
@@ -132,6 +155,17 @@ public class TriangleSubgraph extends FigureSubgraph {
 
 	private TriangleParameters parameters;
 
+	/**
+	 * Creates a subgraph shown as a triangle whose size reflects the depth and
+	 * number of nodes of the collapsed subtree.
+	 * 
+	 * @param nodes
+	 *            nodes initially contained in the subgraph
+	 * @param context
+	 *            layout context the subgraph belongs to
+	 * @param triangleParameters
+	 *            color, direction and reference size of the triangle
+	 */
 	public TriangleSubgraph(NodeLayout[] nodes, LayoutContext context,
 			TriangleParameters triangleParameters) {
 		super(nodes, context);

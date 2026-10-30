@@ -40,6 +40,14 @@ public class TreeLayoutObserver {
 	 * structure made of <code>TreeNode</code>'s subclasses.
 	 */
 	public static class TreeNodeFactory {
+		/**
+		 * Creates a tree node for the given node layout.
+		 * 
+		 * @param nodeLayout node layout the tree node represents (null for the
+		 *            {@link TreeLayoutObserver#getSuperRoot() Super Root})
+		 * @param observer observer that owns the created node
+		 * @return new tree node
+		 */
 		public TreeNode createTreeNode(NodeLayout nodeLayout,
 				TreeLayoutObserver observer) {
 			return new TreeNode(nodeLayout, observer);
@@ -51,16 +59,28 @@ public class TreeLayoutObserver {
 	 * to it. May be subclassed if additional data and behavior is necessary.
 	 */
 	public static class TreeNode {
+		/** Node layout this tree node represents (null for the Super Root). */
 		final protected NodeLayout node;
+		/** Observer that owns this tree node. */
 		final protected TreeLayoutObserver owner;
+		/** Longest distance to a leaf in the subtree of this node. */
 		protected int height = 0;
+		/** Distance from the root (-1 for the Super Root). */
 		protected int depth = -1;
+		/** Number of leaves in the subtree of this node. */
 		protected int numOfLeaves = 0;
+		/** Number of all nodes in the subtree of this node, excluding itself. */
 		protected int numOfDescendants = 0;
+		/** Position of this node in depth-first traversal, see {@link #getOrder()}. */
 		protected int order = 0;
+		/** Child tree nodes, in the order they were added. */
 		protected final List children = new ArrayList();
+		/** Parent tree node, null before the node is attached to the tree. */
 		protected TreeNode parent;
-		protected boolean firstChild = false, lastChild = false;
+		/** True if this node is the first child of its parent. */
+		protected boolean firstChild = false;
+		/** True if this node is the last child of its parent. */
+		protected boolean lastChild = false;
 
 		/**
 		 * 
@@ -158,7 +178,7 @@ public class TreeLayoutObserver {
 
 		/**
 		 * 
-		 * @return
+		 * @return true if this node is the last child of its parent
 		 */
 		public boolean isLastChild() {
 			return lastChild;
@@ -272,7 +292,7 @@ public class TreeLayoutObserver {
 
 		/**
 		 * 
-		 * @param descendant
+		 * @param descendant node to test
 		 * @return true if this node is an ancestor if given descendant node
 		 */
 		public boolean isAncestorOf(TreeNode descendant) {
@@ -427,10 +447,12 @@ public class TreeLayoutObserver {
 	private ArrayList treeListeners = new ArrayList();
 
 	/**
-	 * Creates a
+	 * Creates an observer that builds a tree structure for the given context
+	 * and keeps it in sync with the context's graph structure.
 	 * 
-	 * @param context
-	 * @param nodeFactory
+	 * @param context layout context to observe
+	 * @param nodeFactory factory used to create tree nodes, or null to use
+	 *            the default {@link TreeNodeFactory}
 	 */
 	public TreeLayoutObserver(LayoutContext context, TreeNodeFactory nodeFactory) {
 		if (nodeFactory == null)
@@ -475,8 +497,8 @@ public class TreeLayoutObserver {
 	 * Returns a {@link TreeNode} related to given node layout. If such a
 	 * <code>TreeNode</code> doesn't exist, it's created.
 	 * 
-	 * @param node
-	 * @return
+	 * @param node node layout to look up
+	 * @return tree node representing the given node layout
 	 */
 	public TreeNode getTreeNode(NodeLayout node) {
 		TreeNode treeNode = (TreeNode) layoutToTree.get(node);

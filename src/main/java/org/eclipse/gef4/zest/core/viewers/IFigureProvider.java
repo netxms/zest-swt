@@ -21,6 +21,10 @@ public interface IFigureProvider {
 
 	/**
 	 * Creates a custom figure for a graph model element
+	 * 
+	 * @param element
+	 *            the model element the figure is created for
+	 * @return figure to display the element with
 	 */
 	public IFigure getFigure(Object element);
 }

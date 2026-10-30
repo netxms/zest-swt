@@ -52,8 +52,10 @@ public interface LayoutContext {
 	 * returned array does not affect this context.
 	 * 
 	 * @param layoutEntity1
+	 *            first entity (node or subgraph)
 	 * @param layoutEntity2
-	 * @return
+	 *            second entity (node or subgraph)
+	 * @return array of connections between the two entities (may be empty)
 	 */
 	public ConnectionLayout[] getConnections(EntityLayout layoutEntity1,
 			EntityLayout layoutEntity2);
@@ -86,6 +88,7 @@ public interface LayoutContext {
 	 * 
 	 * @param nodes
 	 *            nodes to add to the new subgraph
+	 * @return the newly created subgraph
 	 */
 	public SubgraphLayout createSubgraph(NodeLayout[] nodes);
 
@@ -113,6 +116,7 @@ public interface LayoutContext {
 	 * after every event that is not intercepted by any listener.
 	 * 
 	 * @param algorithm
+	 *            the algorithm to use as the main layout algorithm
 	 */
 	public void setMainLayoutAlgorithm(LayoutAlgorithm algorithm);
 
@@ -129,6 +133,7 @@ public interface LayoutContext {
 	 * context.
 	 * 
 	 * @param expandCollapseManager
+	 *            the manager to handle expanding and collapsing of nodes
 	 */
 	public void setExpandCollapseManager(
 			ExpandCollapseManager expandCollapseManager);

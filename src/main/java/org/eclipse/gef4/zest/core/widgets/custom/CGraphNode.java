@@ -25,6 +25,14 @@ public class CGraphNode extends GraphNode {
 	IFigure figure = null;
 
 	/**
+	 * Creates a node rendered with the given custom figure in a graph.
+	 * 
+	 * @param graphModel
+	 *            graph to add the node to
+	 * @param style
+	 *            node style bits (see {@link org.eclipse.gef4.zest.core.widgets.ZestStyles})
+	 * @param figure
+	 *            figure used to draw the node
 	 * @since 2.0
 	 */
 	public CGraphNode(Graph graphModel, int style, IFigure figure) {
@@ -32,6 +40,14 @@ public class CGraphNode extends GraphNode {
 	}
 
 	/**
+	 * Creates a node rendered with the given custom figure in a container.
+	 * 
+	 * @param graphModel
+	 *            container to add the node to
+	 * @param style
+	 *            node style bits (see {@link org.eclipse.gef4.zest.core.widgets.ZestStyles})
+	 * @param figure
+	 *            figure used to draw the node
 	 * @since 2.0
 	 */
 	public CGraphNode(GraphContainer graphModel, int style, IFigure figure) {

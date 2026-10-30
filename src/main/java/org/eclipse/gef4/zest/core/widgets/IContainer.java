@@ -23,13 +23,26 @@ import org.eclipse.swt.widgets.Widget;
  */
 public interface IContainer {
 
+	/**
+	 * Returns the graph this container belongs to.
+	 * 
+	 * @return the owning graph, or this if the container is a graph
+	 */
 	public abstract Graph getGraph();
 
 	/**
+	 * Returns the widget representing this container.
+	 * 
+	 * @return the {@link Graph} or {@link GraphContainer} widget
 	 * @since 2.0
 	 */
 	public Widget getItem();
 
+	/**
+	 * Returns nodes lying directly in this container.
+	 * 
+	 * @return list of {@link GraphNode}s
+	 */
 	public abstract List getNodes();
 
 	/**
@@ -37,7 +50,7 @@ public interface IContainer {
 	 * connections which both source and target nodes lay directly in this
 	 * container are returned.
 	 * 
-	 * @return
+	 * @return list of {@link GraphConnection}s
 	 * @since 2.0
 	 */
 	public abstract List getConnections();
@@ -45,31 +58,51 @@ public interface IContainer {
 	/**
 	 * @noreference This method is not intended to be referenced by clients.
 	 * @param graphNode
+	 *            node to add to this container
 	 */
 	public abstract void addNode(GraphNode graphNode);
 
 	/**
 	 * @noreference This method is not intended to be referenced by clients.
 	 * @param figure
+	 *            figure representing a subgraph, added to the subgraph layer
 	 */
 	public abstract void addSubgraphFigure(IFigure figure);
 
+	/**
+	 * Returns the type of this container.
+	 * 
+	 * @return {@link GraphItem#GRAPH} or {@link GraphItem#CONTAINER}
+	 */
 	public abstract int getItemType();
 
 	/**
-	 * @return
+	 * Returns the area in which the layout algorithm places entities.
+	 * 
+	 * @return layout bounds of this container
 	 * @since 2.0
 	 */
 	public abstract DisplayIndependentRectangle getLayoutBounds();
 
 	/**
 	 * @noreference This method is not intended to be referenced by clients.
-	 * @return
+	 * @return layout context of this container
 	 */
 	public abstract InternalLayoutContext getLayoutContext();
 
+	/**
+	 * Runs the layout algorithm on this container.
+	 */
 	public void applyLayout();
 
+	/**
+	 * Sets the layout algorithm used for this container.
+	 * 
+	 * @param algorithm
+	 *            layout algorithm to use
+	 * @param apply
+	 *            true to run the algorithm immediately
+	 */
 	public void setLayoutAlgorithm(LayoutAlgorithm algorithm, boolean apply);
 
 	/**

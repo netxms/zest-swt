@@ -49,7 +49,9 @@ import org.eclipse.gef4.zest.layouts.interfaces.NodeLayout;
 public class SugiyamaLayoutAlgorithm implements LayoutAlgorithm {
 
 	// Tree direction constants
+	/** Direction that places layers from left to right. */
 	public final static int HORIZONTAL = 1;
+	/** Direction that places layers from top to bottom. */
 	public final static int VERTICAL = 2;
 
 	// Internal constants
@@ -161,10 +163,20 @@ public class SugiyamaLayoutAlgorithm implements LayoutAlgorithm {
 		dimension = dim;
 	}
 
+	/**
+	 * Constructs a layered layout with the given direction that uses the
+	 * bounds of the layout context as its area.
+	 * 
+	 * @param dir {@link #HORIZONTAL} or {@link #VERTICAL}
+	 */
 	public SugiyamaLayoutAlgorithm(int dir) {
 		this(dir, null);
 	}
 
+	/**
+	 * Constructs a top-to-bottom layered layout that uses the bounds of the
+	 * layout context as its area.
+	 */
 	public SugiyamaLayoutAlgorithm() {
 		this(VERTICAL, null);
 	}

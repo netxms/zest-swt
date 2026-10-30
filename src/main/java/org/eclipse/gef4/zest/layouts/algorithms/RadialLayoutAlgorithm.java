@@ -57,13 +57,21 @@ public class RadialLayoutAlgorithm implements LayoutAlgorithm {
 	private NodeLayout root = null;
 
 	/**
+	 * Creates a radial layout that resizes entities unless style is
+	 * {@link LayoutStyles#NO_LAYOUT_NODE_RESIZING}.
+	 * 
+	 * @param style layout style flags
 	 * @deprecated Since Zest 2.0, use {@link #RadialLayoutAlgorithm()}.
 	 */
+	@Deprecated
 	public RadialLayoutAlgorithm(int style) {
 		this();
 		setResizing(style != LayoutStyles.NO_LAYOUT_NODE_RESIZING);
 	}
 
+	/**
+	 * Creates a radial layout that does not resize entities.
+	 */
 	public RadialLayoutAlgorithm() {
 	}
 
@@ -214,8 +222,8 @@ public class RadialLayoutAlgorithm implements LayoutAlgorithm {
 	 * Set range the radial layout will use when applyLayout is called. Both
 	 * values must be in radians.
 	 * 
-	 * @param startDegree
-	 * @param endDegree
+	 * @param startDegree angle at which the layout range starts, in radians
+	 * @param endDegree angle at which the layout range ends, in radians
 	 */
 	public void setRangeToLayout(double startDegree, double endDegree) {
 		this.startDegree = startDegree;

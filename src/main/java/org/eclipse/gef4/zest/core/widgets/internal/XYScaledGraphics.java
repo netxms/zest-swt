@@ -39,6 +39,10 @@ import org.eclipse.swt.widgets.Display;
  */
 public class XYScaledGraphics extends ScaledGraphics {
 
+	/**
+	 * Threshold zoom level for text scaling; font height is scaled by the
+	 * smaller of the two zoom factors on either side of it.
+	 */
 	public static final double MAX_TEXT_SIZE = 0.45; // MAX size, when to stop
 
 	// zooming text
@@ -574,6 +578,15 @@ public class XYScaledGraphics extends ScaledGraphics {
 		restoreLocalState((State) stack.get(stackPointer - 1));
 	}
 
+	/**
+	 * Multiplies the current horizontal and vertical zoom by the given
+	 * amounts.
+	 * 
+	 * @param xAmount
+	 *            horizontal scale factor
+	 * @param yAmount
+	 *            vertical scale factor
+	 */
 	public void scale(double xAmount, double yAmount) {
 		setScale(xZoom * xAmount, yZoom * yAmount);
 
@@ -674,6 +687,15 @@ public class XYScaledGraphics extends ScaledGraphics {
 		graphics.setLineWidth(zoomLineWidth(width));
 	}
 
+	/**
+	 * Sets horizontal and vertical zoom, adjusting the font and line width of
+	 * the underlying graphics accordingly.
+	 * 
+	 * @param xValue
+	 *            horizontal zoom
+	 * @param yValue
+	 *            vertical zoom
+	 */
 	public void setScale(double xValue, double yValue) {
 		if (xValue == xZoom && yValue == yZoom) {
 			return;

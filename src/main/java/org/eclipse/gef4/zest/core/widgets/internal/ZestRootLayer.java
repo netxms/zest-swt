@@ -31,18 +31,39 @@ import org.eclipse.draw2d.IFigure;
  */
 public class ZestRootLayer extends FreeformLayer {
 
+	/**
+	 * Bottom layer, holding connection figures.
+	 */
 	public static final int CONNECTIONS_LAYER = 0;
 
+	/**
+	 * Layer holding subgraph figures, above connections.
+	 */
 	public static final int SUBGRAPHS_LAYER = 1;
 
+	/**
+	 * Layer holding node figures, above subgraphs.
+	 */
 	public static final int NODES_LAYER = 2;
 
+	/**
+	 * Layer holding highlighted connection figures, above nodes.
+	 */
 	public static final int CONNECTIONS_HIGHLIGHTED_LAYER = 3;
 
+	/**
+	 * Layer holding highlighted node figures, above highlighted connections.
+	 */
 	public static final int NODES_HIGHLIGHTED_LAYER = 4;
 
+	/**
+	 * Topmost layer, holding figures added without an explicit layer.
+	 */
 	public static final int TOP_LAYER = 5;
 
+	/**
+	 * Number of layers in this figure.
+	 */
 	public static final int NUMBER_OF_LAYERS = 6;
 
 	private final int[] itemsInLayer = new int[NUMBER_OF_LAYERS];
@@ -72,26 +93,64 @@ public class ZestRootLayer extends FreeformLayer {
 		addFigure(nodeFigure, NODES_LAYER);
 	}
 
+	/**
+	 * Adds a connection to the ZestRootLayer
+	 * 
+	 * @param connectionFigure
+	 *            The figure representing the connection
+	 */
 	public void addConnection(IFigure connectionFigure) {
 		addFigure(connectionFigure, CONNECTIONS_LAYER);
 	}
 
+	/**
+	 * Adds a subgraph to the ZestRootLayer
+	 * 
+	 * @param subgraphFigrue
+	 *            The figure representing the subgraph
+	 */
 	public void addSubgraph(IFigure subgraphFigrue) {
 		addFigure(subgraphFigrue, SUBGRAPHS_LAYER);
 	}
 
+	/**
+	 * Moves a node figure to the highlighted nodes layer, above all other
+	 * nodes.
+	 * 
+	 * @param nodeFigure
+	 *            The figure representing the node
+	 */
 	public void highlightNode(IFigure nodeFigure) {
 		changeFigureLayer(nodeFigure, NODES_HIGHLIGHTED_LAYER);
 	}
 
+	/**
+	 * Moves a connection figure to the highlighted connections layer, above
+	 * nodes.
+	 * 
+	 * @param connectionFigure
+	 *            The figure representing the connection
+	 */
 	public void highlightConnection(IFigure connectionFigure) {
 		changeFigureLayer(connectionFigure, CONNECTIONS_HIGHLIGHTED_LAYER);
 	}
 
+	/**
+	 * Moves a node figure back to the regular nodes layer.
+	 * 
+	 * @param nodeFigure
+	 *            The figure representing the node
+	 */
 	public void unHighlightNode(IFigure nodeFigure) {
 		changeFigureLayer(nodeFigure, NODES_LAYER);
 	}
 
+	/**
+	 * Moves a connection figure back to the regular connections layer.
+	 * 
+	 * @param connectionFigure
+	 *            The figure representing the connection
+	 */
 	public void unHighlightConnection(IFigure connectionFigure) {
 		changeFigureLayer(connectionFigure, CONNECTIONS_LAYER);
 	}
@@ -163,6 +222,14 @@ public class ZestRootLayer extends FreeformLayer {
 		return layer;
 	}
 
+	/**
+	 * Adds a figure at the end of the given layer.
+	 * 
+	 * @param figure
+	 *            figure to add
+	 * @param layer
+	 *            one of the *_LAYER constants of this class
+	 */
 	public void addFigure(IFigure figure, int layer) {
 		int position = getPosition(layer);
 		itemsInLayer[layer]++;
@@ -204,6 +271,15 @@ public class ZestRootLayer extends FreeformLayer {
 		}
 	}
 
+	/**
+	 * Adds a decoration figure right after the figure it decorates, in the same
+	 * layer. The decoration is removed together with the decorated figure.
+	 * 
+	 * @param decorated
+	 *            figure already on this layer
+	 * @param decorating
+	 *            figure drawn on top of the decorated one
+	 */
 	public void addDecoration(IFigure decorated, IFigure decorating) {
 		int position = this.getChildren().indexOf(decorated);
 		if (position == -1) {

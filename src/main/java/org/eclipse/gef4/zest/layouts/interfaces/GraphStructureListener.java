@@ -11,8 +11,16 @@ package org.eclipse.gef4.zest.layouts.interfaces;
 
 import org.eclipse.gef4.zest.layouts.LayoutAlgorithm;
 
+/**
+ * Listener notified when nodes or connections are added to or removed from a
+ * {@link LayoutContext}.
+ */
 public interface GraphStructureListener {
 
+	/**
+	 * Empty implementation of {@link GraphStructureListener} that intercepts
+	 * no events; subclass it and override only the methods of interest.
+	 */
 	public class Stub implements GraphStructureListener {
 
 		public boolean nodeAdded(LayoutContext context, NodeLayout node) {

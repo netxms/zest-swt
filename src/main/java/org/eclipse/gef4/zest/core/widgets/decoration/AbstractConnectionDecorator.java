@@ -12,12 +12,18 @@ import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.draw2d.RotatableDecoration;
 import org.eclipse.gef4.zest.core.widgets.GraphConnection;
 
+/**
+ * Base class for connection decorators that attach a source and a target
+ * decoration to the connection figure.
+ */
 public abstract class AbstractConnectionDecorator implements
 		IConnectionDecorator {
 
 	/**
 	 * Creates a source decoration for the connection
 	 * 
+	 * @param connection
+	 *            connection being decorated
 	 * @return the provided source decoration, or null if not applicable
 	 */
 	public abstract RotatableDecoration createSourceDecoration(
@@ -26,6 +32,8 @@ public abstract class AbstractConnectionDecorator implements
 	/**
 	 * Creates a target decoration for the connection
 	 * 
+	 * @param connection
+	 *            connection being decorated
 	 * @return the provided target decoration, or null if not applicable
 	 */
 	public abstract RotatableDecoration createTargetDecoration(

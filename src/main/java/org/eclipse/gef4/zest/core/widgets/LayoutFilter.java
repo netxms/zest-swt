@@ -15,6 +15,13 @@ package org.eclipse.gef4.zest.core.widgets;
  */
 public interface LayoutFilter {
 
+	/**
+	 * Checks whether the given item should be excluded from layout.
+	 * 
+	 * @param item
+	 *            node or connection to check
+	 * @return true if the item is to be ignored by layout algorithms
+	 */
 	public boolean isObjectFiltered(GraphItem item);
 
 }

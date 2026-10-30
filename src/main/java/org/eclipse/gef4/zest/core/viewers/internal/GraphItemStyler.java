@@ -34,7 +34,21 @@ import org.eclipse.swt.graphics.Color;
  * @author Del Myers
  */
 // @tag bug(151327-Styles) : created to help resolve this bug
+/**
+ * Helper class used to style graph elements based on graph element stylers.
+ */
 public class GraphItemStyler {
+	/**
+	 * Styles the given node or connection using whatever styling interfaces
+	 * ({@code ILabelProvider}, {@code IColorProvider}, {@code IFontProvider},
+	 * {@code IEntityStyleProvider}, {@code IEntityConnectionStyleProvider},
+	 * {@code ISelfStyleProvider}, ...) the label provider implements.
+	 * 
+	 * @param item
+	 *            the node or connection to style
+	 * @param labelProvider
+	 *            the viewer's label provider
+	 */
 	public static void styleItem(GraphItem item,
 			final IBaseLabelProvider labelProvider) {
 
@@ -271,6 +285,10 @@ public class GraphItemStyler {
 	/**
 	 * Returns the SWT line style for the given zest connection style.
 	 * 
+	 * @param style
+	 *            zest connection style bits
+	 * @return matching {@code SWT.LINE_*} constant (solid if none of the line
+	 *         style bits is set)
 	 */
 	public static int getLineStyleForZestStyle(int style) {
 		int lineStyles = ZestStyles.CONNECTIONS_DASH_DOT

@@ -17,8 +17,18 @@ package org.eclipse.gef4.zest.layouts.dataStructures;
  * @author Casey Best
  */
 public class DisplayIndependentPoint {
-	public double x, y;
+	/** Horizontal coordinate of this point. */
+	public double x;
+	/** Vertical coordinate of this point. */
+	public double y;
 
+	/**
+	 * Compares this point with another point by coordinates.
+	 * 
+	 * @param o point to compare with (must be a
+	 *            {@link DisplayIndependentPoint})
+	 * @return true if both points have the same x and y coordinates
+	 */
 	public boolean equals(Object o) {
 		DisplayIndependentPoint that = (DisplayIndependentPoint) o;
 		if (this.x == that.x && this.y == that.y)
@@ -27,11 +37,22 @@ public class DisplayIndependentPoint {
 			return false;
 	}
 
+	/**
+	 * Creates a point with the given coordinates.
+	 * 
+	 * @param x horizontal coordinate
+	 * @param y vertical coordinate
+	 */
 	public DisplayIndependentPoint(double x, double y) {
 		this.x = x;
 		this.y = y;
 	}
 
+	/**
+	 * Creates a copy of the given point.
+	 * 
+	 * @param point point to copy
+	 */
 	public DisplayIndependentPoint(DisplayIndependentPoint point) {
 		this.x = point.x;
 		this.y = point.y;
@@ -45,9 +66,11 @@ public class DisplayIndependentPoint {
 	 * Create a new point based on the current point but in a new coordinate
 	 * system
 	 * 
-	 * @param currentBounds
-	 * @param targetBounds
-	 * @return
+	 * @param currentBounds bounds of the coordinate system this point is
+	 *            currently expressed in
+	 * @param targetBounds bounds of the coordinate system to convert to
+	 * @return new point at the same relative position within targetBounds as
+	 *         this point has within currentBounds
 	 */
 	public DisplayIndependentPoint convert(
 			DisplayIndependentRectangle currentBounds,
@@ -66,8 +89,10 @@ public class DisplayIndependentPoint {
 	 * Converts this point based on the current x, y values to a percentage of
 	 * the specified coordinate system
 	 * 
-	 * @param bounds
-	 * @return
+	 * @param bounds bounds of the coordinate system this point is expressed
+	 *            in
+	 * @return new point whose coordinates are fractions (0 to 1) of the width
+	 *         and height of bounds
 	 */
 	public DisplayIndependentPoint convertToPercent(
 			DisplayIndependentRectangle bounds) {
@@ -82,8 +107,9 @@ public class DisplayIndependentPoint {
 	 * Converts this point based on the current x, y values from a percentage of
 	 * the specified coordinate system
 	 * 
-	 * @param bounds
-	 * @return
+	 * @param bounds bounds of the coordinate system to convert to
+	 * @return new point with absolute coordinates within bounds, treating this
+	 *         point's coordinates as fractions (0 to 1) of its width and height
 	 */
 	public DisplayIndependentPoint convertFromPercent(
 			DisplayIndependentRectangle bounds) {

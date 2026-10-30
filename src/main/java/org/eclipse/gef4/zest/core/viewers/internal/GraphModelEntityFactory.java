@@ -23,7 +23,10 @@ import org.eclipse.gef4.zest.core.widgets.GraphConnection;
 import org.eclipse.gef4.zest.core.widgets.GraphItem;
 import org.eclipse.gef4.zest.core.widgets.GraphNode;
 
-/*
+/**
+ * Model factory for viewers whose content provider is an
+ * {@code IGraphEntityContentProvider}: nodes come from the content provider's
+ * elements and connections from their connected-to lists.
  * 
  * @author Ian Bull
  */
@@ -31,6 +34,12 @@ public class GraphModelEntityFactory extends AbstractStylingModelFactory {
 
 	AbstractStructuredGraphViewer viewer = null;
 
+	/**
+	 * Creates a factory building the model for the given viewer.
+	 * 
+	 * @param viewer
+	 *            the viewer this factory builds the graph model for
+	 */
 	public GraphModelEntityFactory(AbstractStructuredGraphViewer viewer) {
 		super(viewer);
 		this.viewer = viewer;

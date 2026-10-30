@@ -47,7 +47,7 @@ public interface ExpandCollapseManager {
 	 *            context containing the node
 	 * @param node
 	 *            node to check
-	 * @return
+	 * @return true if the node can be expanded
 	 */
 	public boolean canExpand(LayoutContext context, NodeLayout node);
 
@@ -58,7 +58,7 @@ public interface ExpandCollapseManager {
 	 *            context containing the node
 	 * @param node
 	 *            node to check
-	 * @return
+	 * @return true if the node can be collapsed
 	 */
 	public boolean canCollapse(LayoutContext context, NodeLayout node);
 }

@@ -30,9 +30,19 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 
+/**
+ * Label of a {@link GraphContainer}: shows the container's text and image next
+ * to a twistie that opens and closes the container when clicked.
+ */
 public class ExpandGraphLabel extends Figure implements ActionListener {
 
+	/**
+	 * Expander state when the container is open.
+	 */
 	public static final int OPEN = 1;
+	/**
+	 * Expander state when the container is closed.
+	 */
 	public static final int CLOSED = 2;
 	private int state = CLOSED;
 	private Expander expander = null;
@@ -70,6 +80,7 @@ public class ExpandGraphLabel extends Figure implements ActionListener {
 	 * or ExpanderGraphLabel.CLOSED
 	 * 
 	 * @param state
+	 *            {@link #OPEN} or {@link #CLOSED}
 	 */
 	public void setExpandedState(int state) {
 		if (state == OPEN) {
@@ -102,20 +113,60 @@ public class ExpandGraphLabel extends Figure implements ActionListener {
 	private ToolbarLayout layout;
 	private boolean animate;
 
+	/**
+	 * Creates a label with no text and no image.
+	 * 
+	 * @param container
+	 *            container this label belongs to
+	 * @param cacheLabel
+	 *            true to cache the rendered text in an image
+	 */
 	public ExpandGraphLabel(GraphContainer container, boolean cacheLabel) {
 		this(container, "", null, cacheLabel);
 	}
 
+	/**
+	 * Creates a label with an image and no text.
+	 * 
+	 * @param container
+	 *            container this label belongs to
+	 * @param i
+	 *            image to show
+	 * @param cacheLabel
+	 *            true to cache the rendered text in an image
+	 */
 	public ExpandGraphLabel(GraphContainer container, Image i,
 			boolean cacheLabel) {
 		this(container, "", i, cacheLabel);
 	}
 
+	/**
+	 * Creates a label with text and no image.
+	 * 
+	 * @param container
+	 *            container this label belongs to
+	 * @param text
+	 *            text to show
+	 * @param cacheLabel
+	 *            true to cache the rendered text in an image
+	 */
 	public ExpandGraphLabel(GraphContainer container, String text,
 			boolean cacheLabel) {
 		this(container, text, null, cacheLabel);
 	}
 
+	/**
+	 * Creates a label with text and image.
+	 * 
+	 * @param container
+	 *            container this label belongs to
+	 * @param text
+	 *            text to show
+	 * @param image
+	 *            image to show
+	 * @param cacheLabel
+	 *            true to cache the rendered text in an image
+	 */
 	public ExpandGraphLabel(GraphContainer container, String text, Image image,
 			boolean cacheLabel) {
 		int graphStyle = container.getGraph().getStyle();
@@ -263,6 +314,13 @@ public class ExpandGraphLabel extends Figure implements ActionListener {
 	// return this.label.getPreferredSize();
 	// }
 
+	/**
+	 * Sets the text and immediately re-lays out the label so that its
+	 * preferred size reflects the new text.
+	 * 
+	 * @param string
+	 *            new text
+	 */
 	public void setTextT(String string) {
 		this.setPreferredSize(null);
 		this.label.setText(string);
@@ -275,12 +333,24 @@ public class ExpandGraphLabel extends Figure implements ActionListener {
 		// this.remove(label);
 	}
 
+	/**
+	 * Sets the text of the label.
+	 * 
+	 * @param string
+	 *            new text
+	 */
 	public void setText(String string) {
 		this.label.setText(string);
 		// this.label.setPreferredSize(500, 30);
 		// adjustBoundsToFit();
 	}
 
+	/**
+	 * Sets the image shown before the text.
+	 * 
+	 * @param image
+	 *            new image, or null for none
+	 */
 	public void setImage(Image image) {
 		this.label.setIcon(image);
 		// adjustBoundsToFit();

@@ -27,6 +27,10 @@ import org.eclipse.gef4.zest.layouts.interfaces.LayoutContext;
 import org.eclipse.gef4.zest.layouts.interfaces.NodeLayout;
 import org.eclipse.gef4.zest.layouts.interfaces.SubgraphLayout;
 
+/**
+ * Layout algorithm that arranges nodes in layers according to connection
+ * direction, using the Draw2D {@link DirectedGraphLayout}.
+ */
 public class DirectedGraphLayoutAlgorithm implements LayoutAlgorithm {
 
 	class ExtendedDirectedGraphLayout extends DirectedGraphLayout {
@@ -56,26 +60,48 @@ public class DirectedGraphLayoutAlgorithm implements LayoutAlgorithm {
 		}
 	}
 
+	/** Orientation that places layers side by side, from left to right. */
 	public static final int HORIZONTAL = 1;
 
+	/** Orientation that places layers one below another, from top to bottom. */
 	public static final int VERTICAL = 2;
 
 	private int orientation = VERTICAL;
 
 	private LayoutContext context;
 
+	/**
+	 * Creates a vertical directed graph layout.
+	 */
 	public DirectedGraphLayoutAlgorithm() {
 	}
 
+	/**
+	 * Creates a directed graph layout with the given orientation.
+	 * 
+	 * @param orientation {@link #HORIZONTAL} or {@link #VERTICAL}; any other
+	 *            value leaves the default (vertical) orientation
+	 */
 	public DirectedGraphLayoutAlgorithm(int orientation) {
 		if (orientation == VERTICAL)
 			this.orientation = orientation;
 	}
 
+	/**
+	 * Returns orientation of this layout.
+	 * 
+	 * @return {@link #HORIZONTAL} or {@link #VERTICAL}
+	 */
 	public int getOrientation() {
 		return orientation;
 	}
 
+	/**
+	 * Sets orientation of this layout. Values other than {@link #HORIZONTAL}
+	 * and {@link #VERTICAL} are ignored.
+	 * 
+	 * @param orientation {@link #HORIZONTAL} or {@link #VERTICAL}
+	 */
 	public void setOrientation(int orientation) {
 		if (orientation == HORIZONTAL || orientation == VERTICAL)
 			this.orientation = orientation;

@@ -29,6 +29,12 @@ public class GraphModelFactory extends AbstractStylingModelFactory {
 
 	AbstractStructuredGraphViewer viewer = null;
 
+	/**
+	 * Creates a factory building the model for the given viewer.
+	 * 
+	 * @param viewer
+	 *            the viewer this factory builds the graph model for
+	 */
 	public GraphModelFactory(AbstractStructuredGraphViewer viewer) {
 		super(viewer);
 		this.viewer = viewer;

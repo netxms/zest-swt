@@ -25,6 +25,12 @@ public class TreeModelEntityFactory extends AbstractStylingModelFactory {
 
 	AbstractStructuredGraphViewer viewer = null;
 
+	/**
+	 * Creates a factory building the model for the given viewer.
+	 * 
+	 * @param viewer
+	 *            the viewer this factory builds the graph model for
+	 */
 	public TreeModelEntityFactory(AbstractStructuredGraphViewer viewer) {
 		super(viewer);
 		this.viewer = viewer;

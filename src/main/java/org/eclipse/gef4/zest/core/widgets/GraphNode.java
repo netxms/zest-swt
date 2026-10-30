@@ -41,7 +41,9 @@ import org.eclipse.swt.widgets.Display;
  * @author Ian Bull
  */
 public class GraphNode extends GraphItem {
+	/** Value of {@link #highlighted} when the node is not highlighted. */
 	public static final int HIGHLIGHT_NONE = 0;
+	/** Value of {@link #highlighted} when the node is highlighted. */
 	public static final int HIGHLIGHT_ON = 1;
 
 	private int nodeStyle;
@@ -56,49 +58,114 @@ public class GraphNode extends GraphItem {
 	private Color borderHighlightColor;
 	private int borderWidth;
 	private PrecisionPoint currentLocation;
+	/**
+	 * Size set by the user; (-1, -1) means the node is packed to the size of
+	 * its figure.
+	 */
 	protected Dimension size;
 	private Font font;
 	private boolean cacheLabel;
 	private boolean visible = true;
 
+	/** Graph that owns this node. */
 	protected Graph graph;
+	/** Container (graph or graph container) this node was added to. */
 	protected IContainer parent;
 
 	/** The internal node. */
 	protected Object internalNode;
 	private boolean selected;
+	/**
+	 * Current highlight state, {@link #HIGHLIGHT_NONE} or
+	 * {@link #HIGHLIGHT_ON}.
+	 */
 	protected int highlighted = HIGHLIGHT_NONE;
 	private IFigure tooltip;
+	/** Draw2d figure that draws this node. */
 	protected IFigure nodeFigure;
 
 	private boolean isDisposed = false;
 	private boolean hasCustomTooltip;
 
+	/**
+	 * Creates a node with an empty label and adds it to the given container.
+	 * 
+	 * @param graphModel
+	 *            container (graph or graph container) the node is added to
+	 * @param style
+	 *            node style bits (the NODES constants in {@link ZestStyles})
+	 */
 	public GraphNode(IContainer graphModel, int style) {
 		// TODO remove cast when deprecated API is removed
 		this(graphModel, style, (IFigure) null);
 	}
 
+	/**
+	 * Creates a node with the given label text and adds it to the given
+	 * container.
+	 * 
+	 * @param graphModel
+	 *            container (graph or graph container) the node is added to
+	 * @param style
+	 *            node style bits (the NODES constants in {@link ZestStyles})
+	 * @param text
+	 *            label text of the node
+	 */
 	public GraphNode(IContainer graphModel, int style, String text) {
 		this(graphModel, style, text, null, null);
 	}
 
 	/**
+	 * Creates a node with an empty label, attaches the given application data
+	 * to it and adds it to the given container.
+	 * 
+	 * @param graphModel
+	 *            container (graph or graph container) the node is added to
+	 * @param style
+	 *            node style bits (the NODES constants in {@link ZestStyles})
+	 * @param data
+	 *            application data to store with {@link #setData(Object)}, or
+	 *            null to store nothing
 	 * @deprecated Since Zest 2.0, use {@link #GraphNode(IContainer, int)} and
 	 *             {@link #setData(Object)}
 	 */
+	@Deprecated
 	public GraphNode(IContainer graphModel, int style, Object data) {
 		this(graphModel, style, "" /* text */, null /* image */, data);
 	}
 
 	/**
+	 * Creates a node with the given label text and image and adds it to the
+	 * given container.
+	 * 
+	 * @param graphModel
+	 *            container (graph or graph container) the node is added to
+	 * @param style
+	 *            node style bits (the NODES constants in {@link ZestStyles})
+	 * @param text
+	 *            label text of the node
+	 * @param image
+	 *            image shown in the node label, or null for none
 	 * @deprecated Since Zest 2.0, use {@link #GraphNode(IContainer, int)},
 	 *             {@link #setText(String)}, and {@link #setImage(Image)}
 	 */
+	@Deprecated
 	public GraphNode(IContainer graphModel, int style, String text, Image image) {
 		this(graphModel, style, text, image, null);
 	}
 
+	/**
+	 * Creates a node drawn by a custom figure and adds it to the given
+	 * container.
+	 * 
+	 * @param graphModel
+	 *            container (graph or graph container) the node is added to
+	 * @param style
+	 *            node style bits (the NODES constants in {@link ZestStyles})
+	 * @param figure
+	 *            figure that draws the node, or null to create the default
+	 *            label figure
+	 */
 	protected GraphNode(IContainer graphModel, int style, IFigure figure) {
 		this(graphModel, style, "", null, figure);
 	}
@@ -116,12 +183,27 @@ public class GraphNode extends GraphItem {
 		this.parent.getGraph().registerItem(this);
 	}
 
+	/**
+	 * Creates the node figure with {@link #createFigureForModel()} and stores
+	 * it in {@link #nodeFigure}.
+	 */
 	protected void initFigure() {
 		nodeFigure = createFigureForModel();
 	}
 
 	static int count = 0;
 
+	/**
+	 * Initializes the model state of this node: default colors, font, size,
+	 * location, connection lists, label text and image.
+	 * 
+	 * @param graphModel
+	 *            container (graph or graph container) the node belongs to
+	 * @param text
+	 *            label text of the node
+	 * @param image
+	 *            image shown in the node label, or null for none
+	 */
 	protected void initModel(IContainer graphModel, String text, Image image) {
 		this.nodeStyle |= graphModel.getGraph().getNodeStyle();
 		this.parent = graphModel;
@@ -201,7 +283,8 @@ public class GraphNode extends GraphItem {
 	 * Determines if this node has a fixed size or if it is packed to the size
 	 * of its contents. To set a node to pack, set its size (-1, -1)
 	 * 
-	 * @return
+	 * @return true if the node has a fixed size, false if it is packed to its
+	 *         figure's preferred size
 	 */
 	public boolean isSizeFixed() {
 		return !(this.size.width < 0 && this.size.height < 0);
@@ -246,12 +329,10 @@ public class GraphNode extends GraphItem {
 		return currentLocation;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Returns whether this node is currently selected in the graph.
 	 * 
-	 * @see
-	 * org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode#isSelected
-	 * ()
+	 * @return true if this node is selected
 	 */
 	public boolean isSelected() {
 		return selected;
@@ -259,6 +340,11 @@ public class GraphNode extends GraphItem {
 
 	/**
 	 * Sets the current location for this node.
+	 * 
+	 * @param x
+	 *            x coordinate of the top left corner of the node
+	 * @param y
+	 *            y coordinate of the top left corner of the node
 	 */
 	public void setLocation(double x, double y) {
 		if (currentLocation.preciseX() != x || currentLocation.preciseY() != y) {
@@ -285,6 +371,8 @@ public class GraphNode extends GraphItem {
 
 	/**
 	 * Get the foreground colour for this node
+	 * 
+	 * @return the foreground (text) color
 	 */
 	public Color getForegroundColor() {
 		return foreColor;
@@ -292,6 +380,9 @@ public class GraphNode extends GraphItem {
 
 	/**
 	 * Set the foreground colour for this node
+	 * 
+	 * @param c
+	 *            the new foreground (text) color
 	 */
 	public void setForegroundColor(Color c) {
 		this.foreColor = c;
@@ -302,6 +393,8 @@ public class GraphNode extends GraphItem {
 	 * Get the background colour for this node. This is the color the node will
 	 * be if it is not currently highlighted. This color is meaningless if a
 	 * custom figure has been set.
+	 * 
+	 * @return the background color used when the node is not highlighted
 	 */
 	public Color getBackgroundColor() {
 		return backColor;
@@ -312,6 +405,7 @@ public class GraphNode extends GraphItem {
 	 * effect if a custom figure has been set.
 	 * 
 	 * @param c
+	 *            the background color used when the node is not highlighted
 	 */
 	public void setBackgroundColor(Color c) {
 		backColor = c;
@@ -322,6 +416,9 @@ public class GraphNode extends GraphItem {
 	 * Sets the tooltip on this node. This tooltip will display if the mouse
 	 * hovers over the node. Setting the tooltip has no effect if a custom
 	 * figure has been set.
+	 * 
+	 * @param tooltip
+	 *            figure shown as the tooltip of this node
 	 */
 	public void setTooltip(IFigure tooltip) {
 		hasCustomTooltip = true;
@@ -332,6 +429,8 @@ public class GraphNode extends GraphItem {
 	/**
 	 * Gets the current tooltip for this node. The tooltip returned is
 	 * meaningless if a custom figure has been set.
+	 * 
+	 * @return the tooltip figure, or null if none has been set
 	 */
 	public IFigure getTooltip() {
 		return this.tooltip;
@@ -361,6 +460,8 @@ public class GraphNode extends GraphItem {
 
 	/**
 	 * Get the highlight colour for this node
+	 * 
+	 * @return the background color used when the node is highlighted
 	 */
 	public Color getHighlightColor() {
 		return highlightColor;
@@ -368,6 +469,9 @@ public class GraphNode extends GraphItem {
 
 	/**
 	 * Set the highlight colour for this node
+	 * 
+	 * @param c
+	 *            the background color used when the node is highlighted
 	 */
 	public void setHighlightColor(Color c) {
 		this.highlightColor = c;
@@ -430,23 +534,50 @@ public class GraphNode extends GraphItem {
 		}
 	}
 
+	/**
+	 * Returns the border color used when the node is not highlighted.
+	 * 
+	 * @return the border color
+	 */
 	public Color getBorderColor() {
 		return borderColor;
 	}
 
+	/**
+	 * Returns the width of the node border.
+	 * 
+	 * @return the border width in pixels
+	 */
 	public int getBorderWidth() {
 		return borderWidth;
 	}
 
+	/**
+	 * Sets the width of the node border and updates the figure.
+	 * 
+	 * @param width
+	 *            the border width in pixels
+	 */
 	public void setBorderWidth(int width) {
 		this.borderWidth = width;
 		updateFigureForModel(nodeFigure);
 	}
 
+	/**
+	 * Returns the font used for the node label.
+	 * 
+	 * @return the label font
+	 */
 	public Font getFont() {
 		return font;
 	}
 
+	/**
+	 * Sets the font used for the node label and updates the figure.
+	 * 
+	 * @param font
+	 *            the new label font
+	 */
 	public void setFont(Font font) {
 		this.font = font;
 		updateFigureForModel(nodeFigure);
@@ -503,6 +634,15 @@ public class GraphNode extends GraphItem {
 				: false;
 	}
 
+	/**
+	 * Sets the size of this node and refreshes its bounds. Pass (-1, -1) to
+	 * let the node pack to the size of its figure.
+	 * 
+	 * @param width
+	 *            new width in pixels, truncated to an integer
+	 * @param height
+	 *            new height in pixels, truncated to an integer
+	 */
 	public void setSize(double width, double height) {
 		if ((width != size.width) || (height != size.height)) {
 			size.width = (int) width;
@@ -511,14 +651,32 @@ public class GraphNode extends GraphItem {
 		}
 	}
 
+	/**
+	 * Returns the border color used when the node is highlighted.
+	 * 
+	 * @return the highlighted border color
+	 */
 	public Color getBorderHighlightColor() {
 		return borderHighlightColor;
 	}
 
+	/**
+	 * Returns whether the node label is drawn into a cached image instead of
+	 * being painted on every repaint.
+	 * 
+	 * @return true if the label is cached
+	 */
 	public boolean cacheLabel() {
 		return this.cacheLabel;
 	}
 
+	/**
+	 * Sets whether the node label is drawn into a cached image instead of
+	 * being painted on every repaint.
+	 * 
+	 * @param cacheLabel
+	 *            true to cache the label
+	 */
 	public void setCacheLabel(boolean cacheLabel) {
 		this.cacheLabel = cacheLabel;
 	}
@@ -558,6 +716,17 @@ public class GraphNode extends GraphItem {
 	private IFigure fishEyeFigure = null;
 	private boolean isFisheyeEnabled;
 
+	/**
+	 * Shows or hides the enlarged "fish eye" figure of this node. Only nodes
+	 * with the {@link ZestStyles#NODES_FISHEYE} style have a fish eye.
+	 * 
+	 * @param enable
+	 *            true to show the fish eye figure, false to remove it
+	 * @param animate
+	 *            true to animate the transition
+	 * @return the fish eye figure that was shown, or null if the fish eye was
+	 *         hidden or could not be shown
+	 */
 	protected IFigure fishEye(boolean enable, boolean animate) {
 		if (isDisposed) {
 			// If a fisheyed figure is still left on the canvas, we could get
@@ -602,6 +771,14 @@ public class GraphNode extends GraphItem {
 		return highlighted > 0;
 	}
 
+	/**
+	 * Applies the state of this node (label text and image, colors, border,
+	 * font and tooltip) to the given figure and refreshes the fish eye figure
+	 * if one is shown.
+	 * 
+	 * @param currentFigure
+	 *            figure to update; nothing happens if null
+	 */
 	protected void updateFigureForModel(IFigure currentFigure) {
 		if (currentFigure == null) {
 			return;
@@ -662,6 +839,12 @@ public class GraphNode extends GraphItem {
 		refreshBounds();
 	}
 
+	/**
+	 * Creates the default figure for this node: a {@link GraphLabel} showing
+	 * the node text and image, kept in sync with the node's size.
+	 * 
+	 * @return the new node figure
+	 */
 	protected IFigure createFigureForModel() {
 		GraphNode node = this;
 		boolean cacheLabel = (this).cacheLabel();
@@ -797,6 +980,10 @@ public class GraphNode extends GraphItem {
 	private InternalNodeLayout layout;
 
 	/**
+	 * Returns the layout interface of this node used by layout algorithms,
+	 * creating it on first use.
+	 * 
+	 * @return the layout interface of this node
 	 * @noreference This method is not intended to be referenced by clients.
 	 */
 	public InternalNodeLayout getLayout() {

@@ -14,7 +14,17 @@ import org.eclipse.draw2d.ChopboxAnchor;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Point;
 
+/**
+ * Anchor for self-loop connections: its reference point lies on the edge of the
+ * owner figure instead of its center, so a loop can leave and enter the figure.
+ */
 public class LoopAnchor extends ChopboxAnchor {
+	/**
+	 * Creates an anchor on the given figure.
+	 * 
+	 * @param owner
+	 *            figure the loop connection is attached to
+	 */
 	public LoopAnchor(IFigure owner) {
 		super(owner);
 	}

@@ -21,5 +21,14 @@ import org.eclipse.gef4.zest.layouts.interfaces.SubgraphLayout;
  * @since 2.0
  */
 public interface SubgraphFactory {
+	/**
+	 * Creates a subgraph containing the given nodes.
+	 * 
+	 * @param nodes
+	 *            nodes initially contained in the subgraph
+	 * @param context
+	 *            layout context the subgraph belongs to
+	 * @return the new subgraph
+	 */
 	SubgraphLayout createSubgraph(NodeLayout[] nodes, LayoutContext context);
 }

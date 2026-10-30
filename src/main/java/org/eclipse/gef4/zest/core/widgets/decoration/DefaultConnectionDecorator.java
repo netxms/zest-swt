@@ -11,6 +11,9 @@ package org.eclipse.gef4.zest.core.widgets.decoration;
 import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.gef4.zest.core.widgets.GraphConnection;
 
+/**
+ * Connection decorator that leaves the connection figure undecorated.
+ */
 public class DefaultConnectionDecorator implements IConnectionDecorator {
 
 	public void decorateConnection(GraphConnection connection,

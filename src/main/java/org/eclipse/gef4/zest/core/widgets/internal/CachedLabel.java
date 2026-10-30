@@ -146,7 +146,7 @@ public abstract class CachedLabel extends Label implements ILabeledFigure {
 	 * Text must have a background color since it is being stored in an image
 	 * (You can set it to white if you want)
 	 * 
-	 * @return
+	 * @return background colour the text is drawn on in the cached image
 	 */
 	protected abstract Color getBackgroundTextColor();
 
@@ -245,6 +245,9 @@ public abstract class CachedLabel extends Label implements ILabeledFigure {
 		invalidationRequired = true;
 	}
 
+	/**
+	 * Disposes the cached image, if any, so it is recreated on next paint.
+	 */
 	protected void cleanImage() {
 		if (cachedImage != null) {
 

@@ -111,6 +111,7 @@ public class ZoomManager {
 	 * @param viewport
 	 *            The Viewport assoicated with this viewport
 	 */
+	@Deprecated
 	public ZoomManager(ScalableFreeformLayeredPane pane, Viewport viewport) {
 		this.pane = pane;
 		this.viewport = viewport;

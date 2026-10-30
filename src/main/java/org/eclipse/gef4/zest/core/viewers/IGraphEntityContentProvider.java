@@ -19,13 +19,21 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
  */
 public interface IGraphEntityContentProvider extends IStructuredContentProvider {
 
+	/**
+	 * Returns the entities (nodes) of the graph for the given input.
+	 * 
+	 * @param inputElement
+	 *            the input model object
+	 * @return all entities to show as nodes in the graph
+	 */
 	public Object[] getElements(Object inputElement);
 
 	/**
 	 * Gets the elements this object is connected to
 	 * 
 	 * @param entity
-	 * @return
+	 *            the entity whose connected entities are requested
+	 * @return entities that the given entity has a connection to
 	 */
 	public Object[] getConnectedTo(Object entity);
 

@@ -60,6 +60,10 @@ public class DefaultSubgraph implements SubgraphLayout {
 		}
 	};
 
+	/**
+	 * Factory creating {@link LabelSubgraph}s, each shown as a label with the
+	 * number of nodes it contains, drawn with the factory's default colors.
+	 */
 	public static class LabelSubgraphFactory implements SubgraphFactory {
 		private Color defaultForegroundColor = ColorConstants.black;
 		private Color defaultBackgroundColor = ColorConstants.yellow;
@@ -91,6 +95,10 @@ public class DefaultSubgraph implements SubgraphLayout {
 		}
 	};
 
+	/**
+	 * Factory creating {@link TriangleSubgraph}s, each shown as a triangle
+	 * drawn with a copy of the factory's current parameters.
+	 */
 	public static class TriangleSubgraphFactory implements SubgraphFactory {
 		private TriangleParameters parameters = new TriangleParameters();
 
@@ -217,12 +225,28 @@ public class DefaultSubgraph implements SubgraphLayout {
 
 	};
 
+	/**
+	 * Layout context this subgraph belongs to.
+	 */
 	protected final InternalLayoutContext context;
 
+	/**
+	 * Nodes currently pruned to this subgraph.
+	 */
 	protected final Set nodes = new HashSet();
 
+	/**
+	 * True once this subgraph has been removed from its context.
+	 */
 	protected boolean disposed = false;
 
+	/**
+	 * Creates an empty subgraph in the given context.
+	 * 
+	 * @param context2
+	 *            layout context of a Zest graph; must be the internal context
+	 *            created by {@link Graph}
+	 */
 	protected DefaultSubgraph(LayoutContext context2) {
 		if (context2 instanceof InternalLayoutContext) {
 			this.context = (InternalLayoutContext) context2;
@@ -301,6 +325,9 @@ public class DefaultSubgraph implements SubgraphLayout {
 		}
 	}
 
+	/**
+	 * Removes nodes that have been disposed from this subgraph.
+	 */
 	public void removeDisposedNodes() {
 		for (Iterator iterator = nodes.iterator(); iterator.hasNext();) {
 			InternalNodeLayout node = (InternalNodeLayout) iterator.next();
@@ -365,6 +392,13 @@ public class DefaultSubgraph implements SubgraphLayout {
 		}
 	}
 
+	/**
+	 * Hides connections that have a pruned node at either end and shows the
+	 * others.
+	 * 
+	 * @param connections
+	 *            connections to update
+	 */
 	protected void refreshConnectionsVisibility(ConnectionLayout[] connections) {
 		for (int i = 0; i < connections.length; i++) {
 			connections[i].setVisible(!connections[i].getSource().isPruned()
@@ -388,10 +422,17 @@ public class DefaultSubgraph implements SubgraphLayout {
 		// do nothing, to be reimplemented in subclasses
 	}
 
+	/**
+	 * Applies location and size set by the layout algorithm to the graphic
+	 * representation of this subgraph. Does nothing by default.
+	 */
 	protected void applyLayoutChanges() {
 		// do nothing
 	}
 
+	/**
+	 * Removes this subgraph from its layout context.
+	 */
 	protected void dispose() {
 		if (!disposed) {
 			context.removeSubgrah(this);

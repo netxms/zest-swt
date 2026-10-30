@@ -16,6 +16,7 @@ import org.eclipse.gef4.zest.layouts.algorithms.TreeLayoutAlgorithm;
  * @deprecated Since Zest 2.0, layout styles are set on the individual layout
  *             algorithms (e.g. {@link TreeLayoutAlgorithm#isResizing()})
  */
+@Deprecated
 public interface LayoutStyles {
 
 	/** Default layout style constant. */

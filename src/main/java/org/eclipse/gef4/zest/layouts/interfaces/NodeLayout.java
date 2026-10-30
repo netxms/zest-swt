@@ -9,10 +9,25 @@
  ******************************************************************************/
 package org.eclipse.gef4.zest.layouts.interfaces;
 
+/**
+ * A graph node as seen by layout algorithms. Nodes can be pruned into
+ * {@link SubgraphLayout subgraphs} and minimized.
+ */
 public interface NodeLayout extends EntityLayout {
 
+	/**
+	 * Checks whether this node may be pruned into a subgraph.
+	 * 
+	 * @return true if this node can be pruned
+	 */
 	public boolean isPrunable();
 
+	/**
+	 * Checks whether this node is currently pruned, that is belongs to a
+	 * subgraph.
+	 * 
+	 * @return true if this node belongs to a subgraph
+	 */
 	public boolean isPruned();
 
 	/**

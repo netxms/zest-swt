@@ -59,6 +59,18 @@ public class LabelSubgraph extends FigureSubgraph {
 		((Label) figure).setText("" + nodes.size());
 	}
 
+	/**
+	 * Creates a subgraph shown as a label with the number of its nodes.
+	 * 
+	 * @param nodes
+	 *            nodes initially contained in the subgraph
+	 * @param context
+	 *            layout context the subgraph belongs to
+	 * @param foregroundColor
+	 *            text color of the label
+	 * @param backgroundColor
+	 *            background color of the label
+	 */
 	public LabelSubgraph(NodeLayout[] nodes, LayoutContext context,
 			Color foregroundColor, Color backgroundColor) {
 		super(nodes, context);

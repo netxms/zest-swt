@@ -13,8 +13,14 @@ package org.eclipse.gef4.zest.layouts.algorithms;
 /**
  * @deprecated Since Zest 2.0, use {@link HorizontalShiftAlgorithm}
  */
+@Deprecated
 public class HorizontalShift extends HorizontalShiftAlgorithm {
 
+	/**
+	 * Creates the algorithm.
+	 * 
+	 * @param style ignored
+	 */
 	public HorizontalShift(int style) {
 	}
 }

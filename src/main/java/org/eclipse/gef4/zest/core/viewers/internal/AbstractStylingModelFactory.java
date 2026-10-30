@@ -47,7 +47,11 @@ public abstract class AbstractStylingModelFactory implements
 	private int nodeStyle;
 
 	/**
+	 * Creates a factory building the model for the given viewer, with default
+	 * (SWT.NONE) node and connection styles.
 	 * 
+	 * @param viewer
+	 *            the viewer this factory builds the graph model for
 	 */
 	public AbstractStylingModelFactory(AbstractStructuredGraphViewer viewer) {
 		this.viewer = viewer;
@@ -55,6 +59,14 @@ public abstract class AbstractStylingModelFactory implements
 		this.nodeStyle = SWT.NONE;
 	}
 
+	/**
+	 * Adjusts curve depths of all connections running between the source and
+	 * destination of the given connection (in either direction), so that
+	 * parallel connections are drawn as distinct arcs instead of overlapping.
+	 * 
+	 * @param conn
+	 *            connection whose parallel connections are to be arranged
+	 */
 	public void styleConnection(GraphConnection conn) {
 		// recount the source and target connections on the node.
 		// this isn't a great way to do it, because it results in
@@ -84,6 +96,8 @@ public abstract class AbstractStylingModelFactory implements
 	 * the bezier curves based on the number of curves in the list.
 	 * 
 	 * @param connections
+	 *            connections running from one node to another, in the same
+	 *            direction
 	 * @param size
 	 *            total number of arcs - may be bigger then connections.size
 	 */
@@ -102,8 +116,10 @@ public abstract class AbstractStylingModelFactory implements
 
 	/**
 	 * @param source
+	 *            node the connections start at
 	 * @param dest
-	 * @return
+	 *            node the connections end at
+	 * @return all connections going from source to dest
 	 */
 	private LinkedList<GraphConnection> getConnectionList(GraphNode source,
 			GraphNode dest) {
@@ -118,6 +134,14 @@ public abstract class AbstractStylingModelFactory implements
 		return list;
 	}
 
+	/**
+	 * Styles the given node or connection according to the viewer's label
+	 * provider; for connections also arranges parallel connections into
+	 * distinct arcs.
+	 * 
+	 * @param item
+	 *            the node or connection to style
+	 */
 	public void styleItem(GraphItem item) {
 		GraphItemStyler.styleItem(item, getLabelProvider());
 		if (item instanceof GraphConnection) {
@@ -188,13 +212,21 @@ public abstract class AbstractStylingModelFactory implements
 		return c;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Creates and returns a node on the given graph for the given user model
+	 * element, displayed with the given custom figure. If the content provider
+	 * is an {@code INestedContentProvider} and the element has children, a
+	 * container is created and populated with child nodes instead. The node is
+	 * styled according to the label provider. If a node already exists for the
+	 * element, it is restyled and returned.
 	 * 
-	 * @see
-	 * org.eclipse.gef4.zest.core.internal.graphmodel.IStylingGraphModelFactory#
-	 * createNode(org.eclipse.gef4.zest.core.internal.graphmodel.GraphModel,
-	 * java.lang.Object)
+	 * @param graph
+	 *            the graph to create or retrieve the node on
+	 * @param element
+	 *            the user model element to create the node for
+	 * @param figure
+	 *            custom figure for the node, or null for the default figure
+	 * @return the node created or retrieved for the element
 	 */
 	public GraphNode createNode(Graph graph, Object element, IFigure figure) {
 		GraphNode node = null;
@@ -327,6 +359,7 @@ public abstract class AbstractStylingModelFactory implements
 	 * Convenience method for clearing all the elements in the graph.
 	 * 
 	 * @param graph
+	 *            the graph to remove all nodes and connections from
 	 */
 	public void clearGraph(Graph graph) {
 		graph.setSelection(null);
@@ -345,6 +378,7 @@ public abstract class AbstractStylingModelFactory implements
 	 * guarantee that the model will be cleared before this method is called.
 	 * 
 	 * @param model
+	 *            the graph to build the model in
 	 */
 	protected void doBuildGraph(Graph model) {
 		clearGraph(model);
@@ -356,8 +390,10 @@ public abstract class AbstractStylingModelFactory implements
 	 * Determines if this element should be filtered or not.
 	 * 
 	 * @param parent
+	 *            parent element passed to the viewer filters
 	 * @param element
-	 * @return
+	 *            element to check against the viewer filters
+	 * @return true if any of the viewer's filters rejects the element
 	 */
 	protected boolean filterElement(Object parent, Object element) {
 		ViewerFilter[] filters = getViewer().getFilters();
@@ -370,12 +406,14 @@ public abstract class AbstractStylingModelFactory implements
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Runs the given elements through all of the viewer's filters.
 	 * 
-	 * @see
-	 * org.eclipse.gef4.zest.core.internal.graphmodel.IStylingGraphModelFactory#
-	 * isFiltered(java.lang.Object)
+	 * @param parent
+	 *            parent element passed to the viewer filters
+	 * @param elements
+	 *            elements to filter
+	 * @return elements accepted by all filters
 	 */
 	protected Object[] filter(Object parent, Object[] elements) {
 		Object[] result = elements;
@@ -401,6 +439,8 @@ public abstract class AbstractStylingModelFactory implements
 	/**
 	 * Converts the list of GraphNode objects into an array and return it.
 	 * 
+	 * @param graph
+	 *            the graph whose nodes are returned
 	 * @return GraphModelNode[]
 	 */
 	protected GraphNode[] getNodesArray(Graph graph) {
@@ -414,7 +454,8 @@ public abstract class AbstractStylingModelFactory implements
 	 * it.
 	 * 
 	 * @param graph
-	 * @return
+	 *            the graph whose connections are returned
+	 * @return all connections of the graph as an array
 	 */
 	protected GraphConnection[] getConnectionArray(Graph graph) {
 		GraphConnection[] connectionArray = new GraphConnection[graph

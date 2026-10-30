@@ -115,10 +115,23 @@ public class TreeLayoutAlgorithm implements LayoutAlgorithm {
 		this.nodeSpace = nodeSpace;
 	}
 
+	/**
+	 * Returns direction of the tree.
+	 * 
+	 * @return one of {@link #TOP_DOWN}, {@link #BOTTOM_UP},
+	 *         {@link #LEFT_RIGHT} and {@link #RIGHT_LEFT}
+	 */
 	public int getDirection() {
 		return direction;
 	}
 
+	/**
+	 * Sets direction of the tree.
+	 * 
+	 * @param direction one of {@link #TOP_DOWN}, {@link #BOTTOM_UP},
+	 *            {@link #LEFT_RIGHT} and {@link #RIGHT_LEFT}
+	 * @throws RuntimeException if direction is none of these values
+	 */
 	public void setDirection(int direction) {
 		if (direction == TOP_DOWN || direction == BOTTOM_UP
 				|| direction == LEFT_RIGHT || direction == RIGHT_LEFT)

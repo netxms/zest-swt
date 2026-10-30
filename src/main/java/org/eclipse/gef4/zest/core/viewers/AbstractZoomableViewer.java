@@ -33,6 +33,19 @@ public abstract class AbstractZoomableViewer extends StructuredViewer {
 	 */
 	protected abstract ZoomManager getZoomManager();
 
+	/**
+	 * Zooms the viewer so that the given rectangle (in viewer coordinates)
+	 * fills the visible area. An empty rectangle resets the zoom to 100%.
+	 * 
+	 * @param x
+	 *            left edge of the rectangle to zoom to
+	 * @param y
+	 *            top edge of the rectangle to zoom to
+	 * @param width
+	 *            width of the rectangle to zoom to
+	 * @param height
+	 *            height of the rectangle to zoom to
+	 */
 	public void zoomTo(int x, int y, int width, int height) {
 		Rectangle r = new Rectangle(x, y, width, height);
 		if (r.isEmpty()) {
