@@ -29,7 +29,7 @@ import org.eclipse.gef4.zest.layouts.interfaces.NodeLayout;
  * Radial tree layout. Single tree root is placed in the center, several roots
  * share the first ring; each next tree level is placed on the next ring. A
  * node's angle is the middle of the angular sector covered by its subtree's
- * leaves, so subtrees stay within their sectors and tree connections do not
+ * leaves, so subtrees stay within their sectors and tree connections rarely
  * cross. Ring radius is large enough to keep the closest pair of neighbours on
  * the ring one node size apart. Result is scaled into layout bounds.
  * <p>
@@ -48,6 +48,9 @@ public class RadialLayoutAlgorithm implements LayoutAlgorithm {
 	// Distances in units of node size
 	private static final double NODE_SPACING = 1.0;
 	private static final double RING_SPACING = 1.5;
+
+	// Exact center search takes time proportional to the square of graph size
+	private static final int MAX_NODES_FOR_EXACT_CENTER = 1000;
 
 	private double startDegree = 0;
 	private double endDegree = MAX_DEGREES;
@@ -90,7 +93,10 @@ public class RadialLayoutAlgorithm implements LayoutAlgorithm {
 		bounds.y += insets;
 		bounds.width -= 2 * insets;
 		bounds.height -= 2 * insets;
-		AlgorithmHelper.fitWithinBounds(entities, bounds, resize);
+		if (resize)
+			AlgorithmHelper.fitWithinBounds(entities, bounds, true);
+		else
+			AlgorithmHelper.fitCentersWithinBounds(entities, bounds);
 	}
 
 	/**
@@ -318,6 +324,21 @@ public class RadialLayoutAlgorithm implements LayoutAlgorithm {
 		}
 
 		/**
+		 * Get the most central node of each connected part of the graph.
+		 */
+		NodeLayout[] componentCenters() {
+			List<NodeLayout> result = new ArrayList<NodeLayout>();
+			boolean[] visited = new boolean[nodes.length];
+			int[] distance = new int[nodes.length];
+			for (int i = 0; i < nodes.length; i++) {
+				if (!visited[i])
+					result.add(nodes[centers(component(i, visited), distance)
+							.get(0)]);
+			}
+			return result.toArray(new NodeLayout[result.size()]);
+		}
+
+		/**
 		 * Collect connected part of the graph containing given node, in
 		 * breadth-first order, and mark its nodes as visited.
 		 */
@@ -339,9 +360,23 @@ public class RadialLayoutAlgorithm implements LayoutAlgorithm {
 		/**
 		 * Get nodes of a connected part ordered from the most central one:
 		 * by number of hops to the farthest node, then by number of
-		 * neighbours (more first), then by order in the context.
+		 * neighbours (more first), then by order in the context. Large part
+		 * gives only one node: the middle of a longest path found by two
+		 * breadth-first searches, exact for trees.
 		 */
 		List<Integer> centers(List<Integer> component, int[] distance) {
+			if (component.size() > MAX_NODES_FOR_EXACT_CENTER) {
+				int[] parent = new int[nodes.length];
+				int end = farthestNode(component.get(0), component, distance,
+						parent);
+				int node = farthestNode(end, component, distance, parent);
+				for (int hops = distance[node] / 2; hops > 0; hops--)
+					node = parent[node];
+				List<Integer> result = new ArrayList<Integer>();
+				result.add(node);
+				return result;
+			}
+
 			final int[] eccentricity = new int[nodes.length];
 			for (int v : component) {
 				for (int u : component)
@@ -372,6 +407,30 @@ public class RadialLayoutAlgorithm implements LayoutAlgorithm {
 				return Integer.compare(a, b);
 			});
 			return result;
+		}
+
+		/**
+		 * Find the node farthest from given one by breadth-first search.
+		 */
+		private int farthestNode(int start, List<Integer> component,
+				int[] distance, int[] parent) {
+			for (int u : component)
+				distance[u] = -1;
+			distance[start] = 0;
+			parent[start] = start;
+			List<Integer> queue = new ArrayList<Integer>();
+			queue.add(start);
+			for (int k = 0; k < queue.size(); k++) {
+				int u = queue.get(k);
+				for (int n : neighbours[u]) {
+					if (distance[n] < 0) {
+						distance[n] = distance[u] + 1;
+						parent[n] = u;
+						queue.add(n);
+					}
+				}
+			}
+			return queue.get(queue.size() - 1);
 		}
 
 		/**

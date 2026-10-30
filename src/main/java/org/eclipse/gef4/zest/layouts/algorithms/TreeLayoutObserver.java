@@ -445,6 +445,7 @@ public class TreeLayoutObserver {
 	private final LayoutContext context;
 	private TreeNode superRoot;
 	private ArrayList treeListeners = new ArrayList();
+	private final NodeLayout[] roots;
 
 	/**
 	 * Creates an observer that builds a tree structure for the given context
@@ -455,11 +456,24 @@ public class TreeLayoutObserver {
 	 *            the default {@link TreeNodeFactory}
 	 */
 	public TreeLayoutObserver(LayoutContext context, TreeNodeFactory nodeFactory) {
+		this(context, nodeFactory, null);
+	}
+
+	/**
+	 * @param context
+	 * @param nodeFactory
+	 * @param roots
+	 *            tree roots, one per connected part of the graph, or null to
+	 *            find them by following predecessing nodes
+	 */
+	public TreeLayoutObserver(LayoutContext context,
+			TreeNodeFactory nodeFactory, NodeLayout[] roots) {
 		if (nodeFactory == null)
 			this.factory = new TreeNodeFactory();
 		else
 			this.factory = nodeFactory;
 		this.context = context;
+		this.roots = roots;
 		context.addGraphStructureListener(structureListener);
 		recomputeTree();
 	}
@@ -539,11 +553,18 @@ public class TreeLayoutObserver {
 	private void createTrees(NodeLayout[] nodes) {
 		HashSet alreadyVisited = new HashSet();
 		LinkedList nodesToAdd = new LinkedList();
-		for (int i = 0; i < nodes.length; i++) {
-			NodeLayout root = findRoot(nodes[i], alreadyVisited);
-			if (root != null) {
-				alreadyVisited.add(root);
-				nodesToAdd.addLast(new Object[] { root, superRoot });
+		if (roots != null) {
+			for (int i = 0; i < roots.length; i++) {
+				alreadyVisited.add(roots[i]);
+				nodesToAdd.addLast(new Object[] { roots[i], superRoot });
+			}
+		} else {
+			for (int i = 0; i < nodes.length; i++) {
+				NodeLayout root = findRoot(nodes[i], alreadyVisited);
+				if (root != null) {
+					alreadyVisited.add(root);
+					nodesToAdd.addLast(new Object[] { root, superRoot });
+				}
 			}
 		}
 		while (!nodesToAdd.isEmpty()) {

@@ -17,8 +17,10 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.gef4.zest.layouts.LayoutAlgorithm;
 import org.eclipse.gef4.zest.layouts.algorithms.TreeLayoutObserver.TreeNode;
 import org.eclipse.gef4.zest.layouts.dataStructures.DisplayIndependentRectangle;
+import org.eclipse.gef4.zest.layouts.interfaces.ConnectionLayout;
 import org.eclipse.gef4.zest.layouts.interfaces.EntityLayout;
 import org.eclipse.gef4.zest.layouts.interfaces.LayoutContext;
+import org.eclipse.gef4.zest.layouts.interfaces.NodeLayout;
 
 /**
  * The TreeLayoutAlgorithm class implements a simple algorithm to arrange graph
@@ -170,7 +172,7 @@ public class TreeLayoutAlgorithm implements LayoutAlgorithm {
 		// Tree is built from current graph for each layout run; observer is
 		// not kept attached to the context because it recomputes the whole
 		// tree on every node or connection added to the graph
-		treeObserver = new TreeLayoutObserver(context, null);
+		treeObserver = new TreeLayoutObserver(context, null, findRoots());
 		try {
 			internalApplyLayout();
 		} finally {
@@ -182,6 +184,20 @@ public class TreeLayoutAlgorithm implements LayoutAlgorithm {
 		if (resize)
 			AlgorithmHelper.maximizeSizes(entities);
 		scaleEntities(entities);
+	}
+
+	/**
+	 * Get center of each connected part of the graph as tree root.
+	 * 
+	 * @return tree roots or null if connection direction defines the tree
+	 */
+	private NodeLayout[] findRoots() {
+		for (ConnectionLayout c : context.getConnections()) {
+			if (c.isDirected())
+				return null;
+		}
+		return new RadialLayoutAlgorithm.UndirectedGraph(context)
+				.componentCenters();
 	}
 
 	private void scaleEntities(EntityLayout[] entities) {

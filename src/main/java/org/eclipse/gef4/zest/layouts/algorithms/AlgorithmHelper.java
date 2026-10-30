@@ -54,15 +54,18 @@ public class AlgorithmHelper {
 			fitSingleEntity(entities[0], destinationBounds, resize);
 			return;
 		}
+		double minimalExtent = 1e-9 * Math.max(startingBounds.width,
+				startingBounds.height);
 		for (int i = 0; i < entities.length; i++) {
 			EntityLayout entity = entities[i];
 			DisplayIndependentDimension size = entity.getSize();
 			if (entity.isMovable()) {
 				DisplayIndependentPoint location = entity.getLocation();
-				// Entities that all share same coordinate are centered
-				double percentX = (startingBounds.width > 0) ? (location.x - startingBounds.x)
+				// Entities that share same coordinate are centered; extent
+				// that small relative to the other one is a rounding error
+				double percentX = (startingBounds.width > minimalExtent) ? (location.x - startingBounds.x)
 						/ (startingBounds.width) : 0.5;
-				double percentY = (startingBounds.height > 0) ? (location.y - startingBounds.y)
+				double percentY = (startingBounds.height > minimalExtent) ? (location.y - startingBounds.y)
 						/ (startingBounds.height) : 0.5;
 
 				if (resize && entity.isResizable()) {
@@ -80,6 +83,43 @@ public class AlgorithmHelper {
 			} else if (resize && entity.isResizable()) {
 				entity.setSize(size.width * sizeScale, size.height * sizeScale);
 			}
+		}
+	}
+
+	/**
+	 * Fits given entities within given bounds using the same linear mapping
+	 * for all of them, based on the largest entity size, so straight lines
+	 * between entity centers keep their relative positions and crossings.
+	 * 
+	 * @param entities
+	 * @param destinationBounds
+	 */
+	public static void fitCentersWithinBounds(EntityLayout[] entities,
+			DisplayIndependentRectangle destinationBounds) {
+		DisplayIndependentRectangle startingBounds = getLayoutBounds(entities,
+				false);
+		double maxWidth = 0, maxHeight = 0;
+		for (int i = 0; i < entities.length; i++) {
+			DisplayIndependentDimension size = entities[i].getSize();
+			maxWidth = Math.max(maxWidth, size.width);
+			maxHeight = Math.max(maxHeight, size.height);
+		}
+		double width = Math.max(0, destinationBounds.width - maxWidth);
+		double height = Math.max(0, destinationBounds.height - maxHeight);
+		// Extent that small relative to the other one is a rounding error
+		double minimalExtent = 1e-9 * Math.max(startingBounds.width,
+				startingBounds.height);
+		for (int i = 0; i < entities.length; i++) {
+			if (!entities[i].isMovable())
+				continue;
+			DisplayIndependentPoint location = entities[i].getLocation();
+			double percentX = (startingBounds.width > minimalExtent) ? (location.x - startingBounds.x)
+					/ startingBounds.width : 0.5;
+			double percentY = (startingBounds.height > minimalExtent) ? (location.y - startingBounds.y)
+					/ startingBounds.height : 0.5;
+			entities[i].setLocation(destinationBounds.x + maxWidth / 2
+					+ percentX * width, destinationBounds.y + maxHeight / 2
+					+ percentY * height);
 		}
 	}
 
