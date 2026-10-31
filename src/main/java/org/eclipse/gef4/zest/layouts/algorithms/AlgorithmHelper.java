@@ -91,8 +91,8 @@ public class AlgorithmHelper {
 	 * for all of them, based on the largest entity size, so straight lines
 	 * between entity centers keep their relative positions and crossings.
 	 * 
-	 * @param entities
-	 * @param destinationBounds
+	 * @param entities entities to fit
+	 * @param destinationBounds bounds to fit entities within
 	 */
 	public static void fitCentersWithinBounds(EntityLayout[] entities,
 			DisplayIndependentRectangle destinationBounds) {

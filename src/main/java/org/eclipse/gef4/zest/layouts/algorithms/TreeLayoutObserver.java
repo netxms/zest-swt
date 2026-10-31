@@ -460,8 +460,13 @@ public class TreeLayoutObserver {
 	}
 
 	/**
-	 * @param context
-	 * @param nodeFactory
+	 * Creates an observer that builds a tree structure for the given context
+	 * from the given roots and keeps it in sync with the context's graph
+	 * structure.
+	 * 
+	 * @param context layout context to observe
+	 * @param nodeFactory factory used to create tree nodes, or null to use
+	 *            the default {@link TreeNodeFactory}
 	 * @param roots
 	 *            tree roots, one per connected part of the graph, or null to
 	 *            find them by following predecessing nodes
